@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion vCompileSdkVersion
+    buildToolsVersion vBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion vMinSdkVersion
+        targetSdkVersion vTargetSdkVersion
+        versionCode vGlobalVersionCode
+        versionName vGlobalVersionName
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
