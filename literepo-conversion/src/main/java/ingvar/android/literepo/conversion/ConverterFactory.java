@@ -1,4 +1,4 @@
-package ingvar.android.literepo.converter;
+package ingvar.android.literepo.conversion;
 
 /**
  * Created by Igor Zubenko on 2015.03.26.

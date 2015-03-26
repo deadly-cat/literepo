@@ -1,4 +1,4 @@
-package ingvar.android.literepo.test.converter;
+package ingvar.android.literepo.conversion.test;
 
 import android.content.ContentValues;
 
@@ -6,11 +6,11 @@ import junit.framework.TestCase;
 
 import java.util.Date;
 
-import ingvar.android.literepo.annotation.Column;
-import ingvar.android.literepo.annotation.Entity;
-import ingvar.android.literepo.annotation.Type;
-import ingvar.android.literepo.converter.Converter;
-import ingvar.android.literepo.converter.ConverterFactory;
+import ingvar.android.literepo.conversion.Converter;
+import ingvar.android.literepo.conversion.ConverterFactory;
+import ingvar.android.literepo.conversion.annotation.Column;
+import ingvar.android.literepo.conversion.annotation.Entity;
+import ingvar.android.literepo.conversion.annotation.Type;
 
 /**
  * Created by Igor Zubenko on 2015.03.26.

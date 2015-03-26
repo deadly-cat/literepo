@@ -1,1 +1,1 @@
-include ':literepo', 'examples'
+include ':literepo', ':literepo-conversion', 'examples'

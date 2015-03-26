@@ -1,4 +1,4 @@
-package ingvar.android.literepo.annotation;
+package ingvar.android.literepo.conversion.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

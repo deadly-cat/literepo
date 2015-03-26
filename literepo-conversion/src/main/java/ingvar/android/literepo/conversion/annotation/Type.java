@@ -1,4 +1,4 @@
-package ingvar.android.literepo.annotation;
+package ingvar.android.literepo.conversion.annotation;
 
 /**
  * Created by Igor Zubenko on 2015.03.26.

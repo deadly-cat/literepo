@@ -1,4 +1,4 @@
-package ingvar.android.literepo.converter;
+package ingvar.android.literepo.conversion;
 
 import android.content.ContentValues;
 import android.database.Cursor;
