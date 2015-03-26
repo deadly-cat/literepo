@@ -2,8 +2,9 @@ package ingvar.android.literepo;
 
 import android.net.Uri;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,13 +12,21 @@ import java.util.List;
  */
 public class UriBuilder {
 
+    public static final String PARAM_QUERY = "q";
+    public static final String DELIMITER_LIST = "~d";
+    public static final String DELIMITER_QUERY = "~q";
+    public static final String QUERY_AND = "~a";
+    public static final String QUERY_OR = "~o";
+
+    public static final List<String> RESERVED = Collections.unmodifiableList(Arrays.asList(DELIMITER_LIST, DELIMITER_QUERY, QUERY_AND, QUERY_OR));
+
     private String scheme;
     private String authority;
     private String table;
-    private List<UriCondition> conditions;
+    private StringBuilder query;
 
     public UriBuilder() {
-        conditions = new LinkedList<>();
+        query = new StringBuilder();
     }
 
     public UriBuilder scheme(String scheme) {
@@ -35,119 +44,104 @@ public class UriBuilder {
         return this;
     }
 
-    public UriCondition condition() {
-        UriCondition condition = new UriCondition(this);
-        conditions.add(condition);
-        return condition;
+    public UriBuilder or() {
+        query.append(QUERY_OR);
+        return this;
     }
 
-    public UriBuilder condition(String field, Operator operator, String value) {
-        return condition().field(field).operator(operator).value(value).build();
+    public UriBuilder eq(String field, Object value) {
+        return condition(field, Operator.EQUALS, value.toString());
     }
 
-    public UriBuilder condition(String field, Operator operator, Collection values) {
-        return condition().field(field).operator(operator).values(values).build();
+    public UriBuilder gt(String field, Object value) {
+        return condition(field, Operator.GREATER_THAN, value.toString());
+    }
+
+    public UriBuilder gte(String field, Object value) {
+        return condition(field, Operator.GREATER_THAN_OR_EQUALS, value.toString());
+    }
+
+    public UriBuilder lt(String field, Object value) {
+        return condition(field, Operator.LOWER_THAN, value.toString());
+    }
+
+    public UriBuilder lte(String field, Object value) {
+        return condition(field, Operator.LOWER_THAN_OR_EQUALS, value.toString());
+    }
+
+    public UriBuilder like(String field, Object value) {
+        return condition(field, Operator.LIKE, value.toString());
+    }
+
+    public UriBuilder match(String field, Object value) {
+        return condition(field, Operator.MATCH, value.toString());
+    }
+
+    public UriBuilder in(String field, Collection values) {
+        StringBuilder value = new StringBuilder();
+        for(Object v : values) {
+            if(value.length() > 0) {
+                value.append(DELIMITER_LIST);
+            }
+            checkReserved(v.toString());
+            value.append(v);
+        }
+        return condition(field, Operator.IN, value.toString(), false);
+    }
+
+    public UriBuilder between(String field, Object min, Object max) {
+        checkReserved(min.toString());
+        checkReserved(max.toString());
+        String value = min.toString() + DELIMITER_LIST + max.toString();
+        return condition(field, Operator.BETWEEN, value, false);
+    }
+
+    public UriBuilder isNull(String field) {
+        return condition(field, Operator.IS_NULL, null);
+    }
+
+    public UriBuilder isNotNull(String field) {
+        return condition(field, Operator.IS_NOT_NULL, null);
     }
 
     public Uri build() {
-        Uri.Builder builder = new Uri.Builder()
-                .scheme(scheme)
-                .authority(authority)
-                .path(table);
-
-        for(UriCondition condition : conditions) {
-            builder.appendQueryParameter(
-                condition.field + "." + condition.operator,
-                condition.value
-            );
-        }
-        return builder.build();
+        return new Uri.Builder()
+            .scheme(scheme)
+            .authority(authority)
+            .path(table)
+            .appendQueryParameter(PARAM_QUERY, query.toString())
+            .build();
     }
 
-    public static class UriCondition {
+    protected UriBuilder condition(String field, Operator operator, String value) {
+        return condition(field, operator, value, true);
+    }
 
-        public static final String LIST_DELIMITER = "~";
-
-        private UriBuilder builder;
-        private String field;
-        private String operator;
-        private String value;
-
-        private UriCondition(UriBuilder builder) {
-            this.builder = builder;
+    protected UriBuilder condition(String field, Operator operator, String value, boolean checkValue) {
+        checkReserved(field);
+        if(value != null && checkValue) {
+            checkReserved(value);
         }
 
-        public UriCondition field(String field) {
-            this.field = field;
-            return this;
-        }
-
-        public UriCondition operator(Operator operator) {
-            this.operator = operator.getUri();
-            return this;
-        }
-
-        public UriCondition value(Object value) {
-            this.value = value.toString();
-            return this;
-        }
-
-        public UriCondition values(Collection values) {
-            StringBuilder vb = new StringBuilder();
-            for(Object v : values) {
-                if(vb.length() > 0) {
-                    vb.append(LIST_DELIMITER);
-                }
-                vb.append(v.toString());
+        if(query.length() > 0) {
+            String tmp = query.toString();
+            if(!(tmp.endsWith(QUERY_AND) || tmp.endsWith(QUERY_OR))) {
+                query.append(QUERY_AND);
             }
-            value = vb.toString();
-            return this;
         }
-
-        public UriBuilder build() {
-            return builder;
+        query.append(field).append(DELIMITER_QUERY).append(operator.toUri());
+        if(value != null) {
+            query.append(DELIMITER_QUERY).append(value);
         }
+        return this;
+    }
 
-        public UriCondition eq() {
-            operator = "eq";
-            return this;
+    protected void checkReserved(String str) {
+        for(String reserved : RESERVED) {
+            if(str.contains(reserved)) {
+                throw new IllegalArgumentException(String.format("Name/Value '%s' contains reserved sequence '%s'", str, reserved));
+            }
         }
-
-        public UriCondition gt() {
-            operator = "gt";
-            return this;
-        }
-
-        public UriCondition gte() {
-            operator = "gte";
-            return this;
-        }
-
-        public UriCondition lt() {
-            operator = "lt";
-            return this;
-        }
-
-        public UriCondition lte() {
-            operator = "lte";
-            return this;
-        }
-
-        public UriCondition like() {
-            operator = "like";
-            return this;
-        }
-
-        public UriCondition match() {
-            operator = "match";
-            return this;
-        }
-
-        public UriCondition in() {
-            operator = "in";
-            return this;
-        }
-
     }
 
 }

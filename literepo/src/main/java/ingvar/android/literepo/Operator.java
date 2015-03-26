@@ -16,13 +16,16 @@ public enum Operator {
     LOWER_THAN_OR_EQUALS("lte", "<="),
     LIKE("like", "like"),
     MATCH("match", "match"),
-    IN("in", "in");
+    IN("in", "in"),
+    BETWEEN("bn", "between"),
+    IS_NULL("isn", "is null"),
+    IS_NOT_NULL("isnn", "is not null");
 
     public static final List<Operator> LIST_OPERATORS = Collections.unmodifiableList(Arrays.asList(IN));
 
     public static Operator fromUri(String operator) {
         for(Operator o : values()) {
-            if(o.getUri().equals(operator)) {
+            if(o.toUri().equals(operator)) {
                 return o;
             }
         }
@@ -31,7 +34,7 @@ public enum Operator {
 
     public static Operator fromSql(String operator) {
         for(Operator o : values()) {
-            if(o.getSql().equals(operator)) {
+            if(o.toSql().equals(operator)) {
                 return o;
             }
         }
@@ -46,11 +49,11 @@ public enum Operator {
         this.sql = sql;
     }
 
-    public String getUri() {
+    public String toUri() {
         return uri;
     }
 
-    public String getSql() {
+    public String toSql() {
         return sql;
     }
 
