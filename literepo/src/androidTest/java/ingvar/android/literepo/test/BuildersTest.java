@@ -19,7 +19,6 @@ public class BuildersTest extends TestCase {
     public void testUriBuilder() {
         //f1 = ? and f2 > ? and f3 in (?, ?, ?, ?)
         Uri uri = new UriBuilder()
-            .scheme("content")
             .authority("example.com")
             .table("example")
             .eq("f1", "v1")
@@ -33,7 +32,6 @@ public class BuildersTest extends TestCase {
     public void testUriBuilderWithOr() {
         //(f1 = ? or f1 = ?) and (f2 > ? or f2 > ?)
         Uri uri = new UriBuilder()
-            .scheme("content")
             .authority("example.com")
             .table("example")
             .eq("f1", "v1").or().eq("f1", "v11")
@@ -46,7 +44,6 @@ public class BuildersTest extends TestCase {
     public void testUriBuilderWithOr2() {
         //(f1 = ? or f1 = ? or f2 > ?)
         Uri uri = new UriBuilder()
-            .scheme("content")
             .authority("example.com")
             .table("example")
             .eq("f1", "v1")

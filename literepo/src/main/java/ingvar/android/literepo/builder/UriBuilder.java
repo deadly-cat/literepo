@@ -27,6 +27,7 @@ public class UriBuilder {
 
     public UriBuilder() {
         query = new StringBuilder();
+        scheme = "content"; //default
     }
 
     public UriBuilder scheme(String scheme) {
