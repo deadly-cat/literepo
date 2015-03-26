@@ -1,4 +1,4 @@
-package ingvar.android.literepo;
+package ingvar.android.literepo.builder;
 
 import android.net.Uri;
 

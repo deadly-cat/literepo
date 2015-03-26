@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 
+import ingvar.android.literepo.builder.Query;
+
 /**
  * Created by Igor Zubenko on 2015.03.25.
  */

@@ -7,9 +7,9 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 import java.util.List;
 
-import ingvar.android.literepo.Operator;
-import ingvar.android.literepo.Query;
-import ingvar.android.literepo.UriBuilder;
+import ingvar.android.literepo.builder.Operator;
+import ingvar.android.literepo.builder.Query;
+import ingvar.android.literepo.builder.UriBuilder;
 
 /**
  * Created by Igor Zubenko on 2015.03.25.
