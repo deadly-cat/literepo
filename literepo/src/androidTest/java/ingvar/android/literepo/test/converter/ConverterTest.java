@@ -33,7 +33,7 @@ public class ConverterTest extends TestCase {
     }
 
     public static class Contract {
-        public static final String TABLE_NAME = "item";
+        public static final String TABLE_NAME = "person";
         public static final String COL_NAME = "name";
         public static final String COL_BIRTHDAY = "birthday";
     }
