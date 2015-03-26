@@ -25,7 +25,7 @@ public class ConverterTest extends TestCase {
         ContentValues values = converter.convert(person);
 
         assertEquals("Names don't match", person.name, values.getAsString(Contract.COL_NAME));
-        assertEquals("Dates don't match", person.birthday, values.getAsLong(Contract.COL_BIRTHDAY));
+        assertEquals("Dates don't match", Long.valueOf(person.birthday.getTime()), values.getAsLong(Contract.COL_BIRTHDAY));
     }
 
     public void testConversionToEntity() {
