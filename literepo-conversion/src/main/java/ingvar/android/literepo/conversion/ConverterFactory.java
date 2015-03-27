@@ -6,7 +6,8 @@ package ingvar.android.literepo.conversion;
 public class ConverterFactory {
 
     public static <T> Converter<T> create(Class entity) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        //TODO: learn about dynamic code generation.
+        return new ReflectionConverter<T>(entity);
     }
 
     private ConverterFactory() {}

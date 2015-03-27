@@ -9,7 +9,6 @@ import java.util.Date;
 import ingvar.android.literepo.conversion.Converter;
 import ingvar.android.literepo.conversion.ConverterFactory;
 import ingvar.android.literepo.conversion.annotation.Column;
-import ingvar.android.literepo.conversion.annotation.Entity;
 import ingvar.android.literepo.conversion.annotation.Type;
 
 /**
@@ -18,14 +17,23 @@ import ingvar.android.literepo.conversion.annotation.Type;
 public class ConverterTest extends TestCase {
 
     public void testConversionToContentValues() {
-        Person person = new Person("Alice", new Date());
+        Test test = new Test();
+        test.integer = 42;
+        test.real = 42.42f;
+        test.string = "test_string";
+        test.blob = new byte[] {1, 2, 3};
+        test.date = new Date();
 
-        Converter<Person> converter = ConverterFactory.create(Person.class);
+        Converter<Test> converter = ConverterFactory.create(Test.class);
 
-        ContentValues values = converter.convert(person);
+        ContentValues values = converter.convert(test);
 
-        assertEquals("Names don't match", person.name, values.getAsString(Contract.COL_NAME));
-        assertEquals("Dates don't match", Long.valueOf(person.birthday.getTime()), values.getAsLong(Contract.COL_BIRTHDAY));
+        assertEquals("Integers don't match", test.integer, values.getAsInteger(Contract.INTEGER));
+        assertEquals("Reals don't match", test.real, values.getAsFloat(Contract.REAL));
+        assertEquals("Strings don't match", test.string, values.getAsString(Contract.STRING));
+        assertEquals("Blobs don't match", test.blob, values.getAsByteArray(Contract.BLOB));
+        assertEquals("Dates don't match", test.date, new Date(values.getAsLong(Contract.DATE)));
+
     }
 
     public void testConversionToEntity() {
@@ -33,25 +41,29 @@ public class ConverterTest extends TestCase {
     }
 
     public static class Contract {
-        public static final String TABLE_NAME = "person";
-        public static final String COL_NAME = "name";
-        public static final String COL_BIRTHDAY = "birthday";
+        public static final String INTEGER = "integer";
+        public static final String REAL = "real";
+        public static final String STRING = "string";
+        public static final String BLOB = "blob";
+        public static final String DATE = "date";
+
+
     }
 
-    @Entity(Contract.TABLE_NAME)
-    public class Person {
+    public static class Test {
 
-        @Column(value = Contract.COL_NAME, nullable = false)
-        private String name;
+        @Column(type = Type.INTEGER)
+        private Integer integer;
+        @Column(type = Type.REAL)
+        private Float real;
+        @Column(value = Contract.STRING, nullable = false)
+        private String string;
+        @Column(type = Type.BLOB)
+        private byte[] blob;
         @Column(nullable = false, type = Type.DATE)
-        private Date birthday;
+        private Date date;
 
-        public Person() {}
-
-        public Person(String name, Date birthday) {
-            this.name = name;
-            this.birthday = birthday;
-        }
+        public Test() {}
 
     }
 
