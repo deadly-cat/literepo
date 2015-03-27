@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/square_spacing"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <EditText android:id="@+id/creation_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/square_spacing"
+        android:hint="@string/label_create_hint_name"/>
+
+    <EditText android:id="@+id/creation_birthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/square_spacing"
+        android:inputType="date"
+        android:hint="@string/label_create_hint_birthday"/>
+
+    <Button android:id="@+id/creation_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/square_spacing"
+        android:minEms="15"
+        android:text="@string/label_create_button"/>
+
+</LinearLayout>

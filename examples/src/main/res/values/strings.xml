@@ -1,3 +1,12 @@
 <resources>
+
     <string name="app_name">Literepo</string>
+
+    <string name="label_filters">Filters</string>
+    <string name="label_search_name_hint">Search by name</string>
+    <string name="label_search_birthday_hint">Person birthday</string>
+    <string name="label_create_hint_name">Person name</string>
+    <string name="label_create_hint_birthday">Person birthday</string>
+    <string name="label_create_button">Add person</string>
+
 </resources>
