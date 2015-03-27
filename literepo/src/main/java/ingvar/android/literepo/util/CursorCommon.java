@@ -5,6 +5,8 @@ import android.database.Cursor;
 import java.math.BigDecimal;
 
 /**
+ * Helpful methods for working with cursor.
+ *
  * Created by Igor Zubenko on 2014.10.30.
  */
 public class CursorCommon {

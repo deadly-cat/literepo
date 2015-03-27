@@ -10,6 +10,8 @@ import android.net.Uri;
 import ingvar.android.literepo.builder.Query;
 
 /**
+ * Basic provider. Can process requests created by {@link ingvar.android.literepo.builder.UriBuilder}.
+ *
  * Created by Igor Zubenko on 2015.03.25.
  */
 public abstract class LiteProvider extends ContentProvider {
@@ -80,8 +82,18 @@ public abstract class LiteProvider extends ContentProvider {
         return null;
     }
 
+    /**
+     * Create {@link android.database.sqlite.SQLiteOpenHelper} for connect to DB.
+     * @return DB connector
+     */
     protected abstract SQLiteOpenHelper provideOpenHelper();
 
+    /**
+     * Extracted table name from Uri.
+     * Default implementation used path as table name.
+     * @param uri - query uri.
+     * @return table name
+     */
     protected String extractTableName(Uri uri) {
         return uri.getPath().replaceAll("/", "");
     }

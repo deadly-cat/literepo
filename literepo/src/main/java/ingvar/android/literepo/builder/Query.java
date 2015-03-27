@@ -7,6 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Used for creation query string and args.
+ * Can parse Uri created by {@link ingvar.android.literepo.builder.UriBuilder}.
+ *
  * Created by Igor Zubenko on 2015.03.25.
  */
 public class Query {
@@ -16,10 +19,19 @@ public class Query {
     private StringBuilder selection;
     private List<String> args;
 
+    /**
+     * Default constructor
+     */
     public Query() {
         this(null, null);
     }
 
+    /**
+     * Add to result query data from query arguments.
+     *
+     * @param selection selection string
+     * @param args selection args
+     */
     public Query(String selection, String[] args) {
         this.selection = new StringBuilder();
         this.args = new LinkedList<>();
@@ -30,14 +42,28 @@ public class Query {
         }
     }
 
+    /**
+     *
+     * @return selection string
+     */
     public String getSelection() {
         return selection.toString();
     }
 
+    /**
+     *
+     * @return selection args
+     */
     public String[] getArgs() {
         return args.toArray(EA);
     }
 
+    /**
+     * Parse uri created by {@link ingvar.android.literepo.builder.UriBuilder}
+     *
+     * @param uri Query uri
+     * @return this
+     */
     public Query parse(Uri uri) {
         String query = uri.getQueryParameter(UriBuilder.PARAM_QUERY);
         //first split by 'and'
@@ -62,7 +88,7 @@ public class Query {
         return this;
     }
 
-    private void appendCondition(StringBuilder builder, String raw) {
+    protected void appendCondition(StringBuilder builder, String raw) {
         String[] condition = raw.split(UriBuilder.DELIMITER_QUERY);
         if(condition.length < 2 && condition.length > 3) {
             throw new IllegalArgumentException("Wrong condition '" + raw + "'");
