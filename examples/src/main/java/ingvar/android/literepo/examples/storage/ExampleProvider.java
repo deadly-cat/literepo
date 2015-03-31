@@ -11,7 +11,7 @@ public class ExampleProvider extends LiteProvider {
 
     @Override
     protected SQLiteOpenHelper provideOpenHelper() {
-        return null;
+        return new ExampleHelper(getContext());
     }
 
 }

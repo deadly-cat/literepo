@@ -13,8 +13,10 @@ public class ExampleContract {
 
     public static class Person {
 
-        public static final String TABLE_NAME = "person";
+        public static final String TABLE_NAME = "persons";
         public static final Uri URI = Uri.withAppendedPath(CONTENT_URI, TABLE_NAME);
+        public static final String[] PROJECTION = {Col.NAME, Col.BIRTHDAY};
+        public static final String SORT = Col.NAME + " asc";
 
         public static class Col implements BaseColumns {
             public static final String NAME = "name";
