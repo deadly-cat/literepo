@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import ingvar.android.literepo.builder.UriBuilder;
 import ingvar.android.literepo.examples.R;
@@ -42,7 +43,7 @@ public class MainActivity extends RoboActivity {
     public static final ThreadLocal<SimpleDateFormat> DATE_FORMAT = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("d MMMM yyyy");
+            return new SimpleDateFormat("d MMMM yyyy", Locale.getDefault());
         }
     };
 

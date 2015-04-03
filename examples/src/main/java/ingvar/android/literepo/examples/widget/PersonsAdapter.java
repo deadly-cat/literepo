@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import ingvar.android.literepo.examples.R;
 import ingvar.android.literepo.examples.domain.Person;
@@ -28,7 +29,7 @@ public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.Holder> 
 
     public PersonsAdapter(Context context) {
         contextRef = new WeakReference<>(context);
-        format = new SimpleDateFormat("d MMMM yyyy");
+        format = new SimpleDateFormat("d MMMM yyyy", Locale.getDefault());
     }
 
     @Override

@@ -78,7 +78,7 @@
     <ImageButton
         android:layout_width="@dimen/touch_target_size"
         android:layout_height="@dimen/touch_target_size"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/square_spacing"
         android:src="@drawable/ic_create"
         android:background="@drawable/btn_round"

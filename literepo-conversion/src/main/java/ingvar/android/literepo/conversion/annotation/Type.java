@@ -9,6 +9,6 @@ public enum Type {
     REAL,
     TEXT,
     BLOB,
-    DATE;
-
+    DATE
+    
 }

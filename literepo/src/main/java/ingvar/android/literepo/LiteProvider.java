@@ -16,9 +16,9 @@ import ingvar.android.literepo.builder.Query;
  */
 public abstract class LiteProvider extends ContentProvider {
 
-    private SQLiteOpenHelper helper;
-    private SQLiteDatabase writer;
-    private SQLiteDatabase reader;
+    protected SQLiteOpenHelper helper;
+    protected SQLiteDatabase writer;
+    protected SQLiteDatabase reader;
 
     @Override
     public boolean onCreate() {
