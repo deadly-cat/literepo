@@ -43,7 +43,6 @@ public class MainActivity extends RoboActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewPersons = (RecyclerView) findViewById(R.id.list_persons);
         viewPersons.setLayoutManager(new LinearLayoutManager(this));
         viewPersons.setHasFixedSize(true);
         viewPersons.addItemDecoration(new DividerItemDecoration(this));
