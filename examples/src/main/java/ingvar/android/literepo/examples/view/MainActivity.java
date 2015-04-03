@@ -5,7 +5,6 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -41,10 +40,10 @@ public class MainActivity extends RoboActivity {
     private PersonsCallback personsCallback;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        //viewPersons = (RecyclerView) findViewById(R.id.list_persons);
+        viewPersons = (RecyclerView) findViewById(R.id.list_persons);
         viewPersons.setLayoutManager(new LinearLayoutManager(this));
         viewPersons.setHasFixedSize(true);
         viewPersons.addItemDecoration(new DividerItemDecoration(this));

@@ -66,23 +66,25 @@ public class Query {
      */
     public Query parse(Uri uri) {
         String query = uri.getQueryParameter(UriBuilder.PARAM_QUERY);
-        //first split by 'and'
-        for(String ac : query.split(UriBuilder.QUERY_AND)) {
-            if(selection.length() > 0) {
-                selection.append(" and ");
-            }
-            //add condition or split by 'or'
-            if(ac.contains(UriBuilder.QUERY_OR)) {
-                StringBuilder or = new StringBuilder();
-                for(String oc : ac.split(UriBuilder.QUERY_OR)) {
-                    if(or.length() > 0) {
-                        or.append(" or ");
-                    }
-                    appendCondition(or, oc);
+        if(query != null && !query.isEmpty()) {
+            //first split by 'and'
+            for (String ac : query.split(UriBuilder.QUERY_AND)) {
+                if (selection.length() > 0) {
+                    selection.append(" and ");
                 }
-                selection.append("(").append(or).append(")");
-            } else {
-                appendCondition(selection, ac);
+                //add condition or split by 'or'
+                if (ac.contains(UriBuilder.QUERY_OR)) {
+                    StringBuilder or = new StringBuilder();
+                    for (String oc : ac.split(UriBuilder.QUERY_OR)) {
+                        if (or.length() > 0) {
+                            or.append(" or ");
+                        }
+                        appendCondition(or, oc);
+                    }
+                    selection.append("(").append(or).append(")");
+                } else {
+                    appendCondition(selection, ac);
+                }
             }
         }
         return this;
@@ -90,7 +92,7 @@ public class Query {
 
     protected void appendCondition(StringBuilder builder, String raw) {
         String[] condition = raw.split(UriBuilder.DELIMITER_QUERY);
-        if(condition.length < 2 && condition.length > 3) {
+        if(condition.length < 2 || condition.length > 3) {
             throw new IllegalArgumentException("Wrong condition '" + raw + "'");
         }
         Operator operator = Operator.fromUri(condition[1]);
