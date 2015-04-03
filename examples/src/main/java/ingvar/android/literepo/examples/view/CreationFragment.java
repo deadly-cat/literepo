@@ -1,5 +1,7 @@
 package ingvar.android.literepo.examples.view;
 
+import android.content.ContentResolver;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -45,9 +48,16 @@ public class CreationFragment extends RoboDialogFragment {
                 Date date = new Date();// TODO: //birthday.getText()
                 Person person = new Person(name.getText().toString(), date);
 
-                getActivity().getContentResolver()
-                        .insert(ExampleContract.Person.URI,
-                                Conversion.getConverter(Person.class).convert(person));
+                try {
+                    ContentResolver resolver = getActivity().getContentResolver();
+                    resolver.insert(ExampleContract.Person.URI,
+                                    Conversion.getConverter(Person.class).convert(person));
+                    resolver.notifyChange(ExampleContract.Person.URI, null);
+
+                    dismiss();
+                } catch (SQLiteConstraintException e) {
+                    Toast.makeText(getActivity(), getString(R.string.exception_name_already_used), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

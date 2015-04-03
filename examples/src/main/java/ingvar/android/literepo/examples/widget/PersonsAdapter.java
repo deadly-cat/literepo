@@ -16,8 +16,6 @@ import java.util.Date;
 import ingvar.android.literepo.examples.R;
 import ingvar.android.literepo.examples.domain.Person;
 import ingvar.android.literepo.examples.storage.Conversion;
-import roboguice.RoboGuice;
-import roboguice.inject.InjectView;
 
 /**
  * Created by Igor Zubenko on 2015.03.31.
@@ -59,7 +57,7 @@ public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.Holder> 
         int cm = date.get(Calendar.MONTH);
         int age = ((cy * 12 + cm) - (by * 12 + bm)) / 12;
 
-        holder.age.setText(age);
+        holder.age.setText(Integer.toString(age));
     }
 
     @Override
@@ -82,16 +80,15 @@ public class PersonsAdapter extends RecyclerView.Adapter<PersonsAdapter.Holder> 
 
     class Holder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.person_name)
         private TextView name;
-        @InjectView(R.id.person_birthday)
         private TextView birthday;
-        @InjectView(R.id.person_age)
         private TextView age;
 
         public Holder(View itemView) {
             super(itemView);
-            RoboGuice.getInjector(getContext()).injectViewMembers(itemView);
+            name = (TextView) itemView.findViewById(R.id.person_name);
+            birthday = (TextView) itemView.findViewById(R.id.person_birthday);
+            age = (TextView) itemView.findViewById(R.id.person_age);
         }
 
     }

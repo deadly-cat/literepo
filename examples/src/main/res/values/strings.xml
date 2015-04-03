@@ -12,4 +12,6 @@
     <string name="label_grid_birthday">Birthday:</string>
     <string name="label_grid_age">Age:</string>
 
+    <string name="exception_name_already_used">Person already exists in DB. Try another name.</string>
+
 </resources>

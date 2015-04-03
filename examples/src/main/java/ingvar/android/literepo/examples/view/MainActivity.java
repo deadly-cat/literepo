@@ -1,5 +1,7 @@
 package ingvar.android.literepo.examples.view;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -9,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.SearchView;
 
@@ -39,8 +42,22 @@ public class MainActivity extends RoboActivity {
     private PersonsAdapter personsAdapter;
     private PersonsCallback personsCallback;
 
+    public void createPerson(View view) {
+        final String tag = CreationFragment.class.getSimpleName();
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        Fragment prev = getFragmentManager().findFragmentByTag(tag);
+        if(prev != null) {
+            transaction.remove(prev);
+        }
+        transaction.addToBackStack(null);
+
+        new CreationFragment().show(transaction, tag);
+    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         viewPersons.setLayoutManager(new LinearLayoutManager(this));
@@ -95,6 +112,7 @@ public class MainActivity extends RoboActivity {
 
         @Override
         public void onLoadFinished(Loader loader, Cursor data) {
+            data.setNotificationUri(getContentResolver(), ExampleContract.Person.URI);
             personsAdapter.swapCursor(data);
         }
 
@@ -104,6 +122,5 @@ public class MainActivity extends RoboActivity {
         }
 
     }
-
 
 }
