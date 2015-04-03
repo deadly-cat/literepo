@@ -1,8 +1,10 @@
 package ingvar.android.literepo.examples.view;
 
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -10,10 +12,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.SearchView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import ingvar.android.literepo.builder.UriBuilder;
 import ingvar.android.literepo.examples.R;
@@ -30,10 +39,17 @@ import roboguice.inject.InjectView;
 @ContentView(R.layout.activity_main)
 public class MainActivity extends RoboActivity {
 
+    public static final ThreadLocal<SimpleDateFormat> DATE_FORMAT = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("d MMMM yyyy");
+        }
+    };
+
     private static final int PERSONS_LOADER = 0;
 
     @InjectView(R.id.filter_name)
-    private SearchView filterName;
+    private EditText filterName;
     @InjectView(R.id.filter_birthday)
     private EditText filterBirthday;
     @InjectView(R.id.list_persons)
@@ -56,6 +72,14 @@ public class MainActivity extends RoboActivity {
         new CreationFragment().show(transaction, tag);
     }
 
+    public void clearName(View view) {
+        filterName.setText("");
+    }
+
+    public void clearDate(View view) {
+        filterBirthday.setText("");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,17 +89,18 @@ public class MainActivity extends RoboActivity {
         viewPersons.addItemDecoration(new DividerItemDecoration(this));
         viewPersons.setAdapter(personsAdapter = new PersonsAdapter(this));
 
-        filterName.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        filterName.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
-            @Override public boolean onQueryTextChange(String newText) {
+            @Override
+            public void afterTextChanged(Editable s) {
                 getLoaderManager().restartLoader(PERSONS_LOADER, null, personsCallback);
-                return false;
             }
         });
 
+
+        filterBirthday.setInputType(InputType.TYPE_NULL);
         filterBirthday.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -83,6 +108,20 @@ public class MainActivity extends RoboActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 getLoaderManager().restartLoader(PERSONS_LOADER, null, personsCallback);
+            }
+        });
+        filterBirthday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    openDatePicker();
+                }
+            }
+        });
+        filterBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker();
             }
         });
 
@@ -94,7 +133,7 @@ public class MainActivity extends RoboActivity {
 
         @Override
         public Loader onCreateLoader(int id, Bundle args) {
-            String name = filterName.getQuery().toString();
+            String name = filterName.getText().toString();
             String birthday = filterBirthday.getText().toString();
 
             UriBuilder builder = new UriBuilder()
@@ -104,9 +143,11 @@ public class MainActivity extends RoboActivity {
                 builder.like(ExampleContract.Person.Col.NAME, name);
             }
             if(birthday != null && !birthday.isEmpty()) {
-                //TODO: add birthday filter
+                try {
+                    Date date = DATE_FORMAT.get().parse(birthday);
+                    builder.eq(ExampleContract.Person.Col.BIRTHDAY, date.getTime());
+                } catch (ParseException e) {}
             }
-            //TODO: add age filter
             return new CursorLoader(MainActivity.this, builder.build(), ExampleContract.Person.PROJECTION, null, null, ExampleContract.Person.SORT);
         }
 
@@ -121,6 +162,34 @@ public class MainActivity extends RoboActivity {
             personsAdapter.swapCursor(null);
         }
 
+    }
+
+    private void openDatePicker() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(filterBirthday.getWindowToken(), 0);
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                calendar.set(Calendar.HOUR, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+
+                filterBirthday.setText(DATE_FORMAT.get().format(calendar.getTime()));
+            }
+        };
+
+        new DatePickerDialog(this, listener, year, month, day).show();
     }
 
 }

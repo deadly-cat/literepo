@@ -150,12 +150,25 @@ public class UriBuilder {
 
     /**
      * Like operator.
+     * Wraps value to %value%.
      *
      * @param column column name
      * @param value
      * @return builder
      */
     public UriBuilder like(String column, Object value) {
+        return condition(column, Operator.LIKE, "%" + value.toString() + "%");
+    }
+
+    /**
+     * Like operator.
+     * Does not wrap value.
+     *
+     * @param column column name
+     * @param value
+     * @return builder
+     */
+    public UriBuilder likeRaw(String column, Object value) {
         return condition(column, Operator.LIKE, value.toString());
     }
 
