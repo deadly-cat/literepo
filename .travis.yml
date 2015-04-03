@@ -3,6 +3,7 @@ android:
   components:
     - build-tools-21.1.1
     - android-14
+    - extra
 
 #-----------------------------------
 #COMMON PROPERTIES
