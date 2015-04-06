@@ -79,7 +79,7 @@ void loadProperties() {
         ext.vBintrayUser = props['bintray.user']
         ext.vBintrayKey = props['bintray.key']
     }
-    if(ext.vBintrayUser?.trim()) {//get from environment
+    if(!ext.vBintrayUser?.trim()) {//get from environment
         ext.vBintrayUser = System.getenv('bintray_user')
         ext.vBintrayKey = System.getenv('bintray_key')
     }
