@@ -22,7 +22,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:1.1.2'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
 
@@ -43,6 +43,7 @@ final publishedProjects = ['root', 'literepo', 'literepo-conversion']
 configure(allprojects.findAll {publishedProjects.contains(it.name)}) {
 
     apply plugin: 'com.jfrog.bintray'
+
     group = 'ingvar.android.literepo'
     version = vGlobalVersionName
 
@@ -54,8 +55,8 @@ configure(allprojects.findAll {publishedProjects.contains(it.name)}) {
 
         pkg {
             repo = 'maven'
-            name = 'Literepo'
-            desc = 'Simplify your work with sqlite'
+            name = project.name
+            desc = project.description
             websiteUrl = 'https://github.com/deadly-cat/literepo'
             issueTrackerUrl = 'https://github.com/deadly-cat/literepo/issues'
             vcsUrl = 'https://github.com/deadly-cat/literepo.git'
