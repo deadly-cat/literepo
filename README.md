@@ -3,7 +3,14 @@ A small library simplifies working with sqlite in android.
 
 [![Build Status](https://travis-ci.org/deadly-cat/literepo.svg?branch=master)](https://travis-ci.org/deadly-cat/literepo)
 [![License](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
-[**Bintray repository**](https://bintray.com/deadly-cat/maven)
+
+Core library:
+
+[![Download](https://api.bintray.com/packages/deadly-cat/maven/literepo/images/download.svg) ](https://bintray.com/deadly-cat/maven/literepo/_latestVersion)
+
+Conversion library:
+
+[![Download](https://api.bintray.com/packages/deadly-cat/maven/literepo-conversion/images/download.svg) ](https://bintray.com/deadly-cat/maven/literepo-conversion/_latestVersion)
 
 ###Usage
 
