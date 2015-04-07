@@ -17,8 +17,6 @@ allprojects {
 }
 ```
 
-
-
 Next add dependency for your module
 ```groovy
 dependencies {
@@ -28,8 +26,6 @@ dependencies {
     compile 'ingvar.android.literepo:literepo-conversion:1.0.0'
 }
 ```
-
-
 
 For creating request to DB you need to use [**UriBuilder**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/builder/UriBuilder.java).
 ```java
@@ -57,7 +53,6 @@ Don't try to use Uri for large lists. Instead use selection and selectionArgs ar
 **Note**: In this release builder cannot build joins, but in next releases this functionality can be added.
 
 
-
 Also you need to extend [**LiteProvider.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/LiteProvider.java) and override method **provideOpenHelper()**:
 ```java
 public class ExampleProvider extends LiteProvider {
@@ -71,9 +66,7 @@ public class ExampleProvider extends LiteProvider {
 ```
 
 
-
 More examples for builder you can find in the [**BuildersTest.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/androidTest/java/ingvar/android/literepo/test/BuildersTest.java)
-
 
 
 For using conversion library you need to annotate your Entity fields as [@Column](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/main/java/ingvar/android/literepo/conversion/annotation/Column.java).
@@ -96,9 +89,7 @@ Entity entity = converter.convert(cursor);
 **Note**: For now converter not so fast because under the hood it use reflection. In the next release it will be replaced for code generation.
 
 
-
 Examples for conversion you can find in [**ConverterTest.java**](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/androidTest/java/ingvar/android/literepo/conversion/test/ConverterTest.java)
 
 
-
-Example app in the [**example module**](https://github.com/deadly-cat/literepo/tree/master/examples)
+Example app in the [**example module**](https://github.com/deadly-cat/literepo/tree/master/examples).
