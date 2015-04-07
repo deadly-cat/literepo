@@ -14,6 +14,8 @@ Conversion library:
 
 ###Usage
 
+####Core (builders and content provider)
+
 Add url to Bintray repository in your build.gradle
 ```groovy
 allprojects {
@@ -75,6 +77,8 @@ public class ExampleProvider extends LiteProvider {
 
 More examples for builder you can find in the [**BuildersTest.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/androidTest/java/ingvar/android/literepo/test/BuildersTest.java)
 
+
+####Conversion (annotations and converters)
 
 For using conversion library you need to annotate your Entity fields as [@Column](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/main/java/ingvar/android/literepo/conversion/annotation/Column.java).
 ```java
