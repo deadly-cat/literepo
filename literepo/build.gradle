@@ -1,4 +1,18 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+description '''\
+Simplify your work with sqlite in android.
+Core library: contains builders and content provider.
+'''
+
+ext {
+    vTestApplicationId = 'ingvar.android.literepo.test'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
 
 android {
 
@@ -11,7 +25,7 @@ android {
         versionCode vGlobalVersionCode
         versionName vGlobalVersionName
 
-        testApplicationId 'ingvar.android.literepo.test'
+        testApplicationId vTestApplicationId
         testInstrumentationRunner 'android.test.InstrumentationTestRunner'
         testHandleProfiling true
         testFunctionalTest true
@@ -35,6 +49,54 @@ android {
 
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name project.name
+                description project.description
+                url 'https://github.com/deadly-cat/literepo'
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'deadly-cat'
+                        name 'Igor Zubenko'
+                        email 'igor.a.zubenko@gmail.com'
+                    }
+                }
+                scm {
+                    connection 'https://github.com/deadly-cat/literepo.git'
+                    developerConnection 'https://github.com/deadly-cat/literepo.git'
+                    url 'https://github.com/deadly-cat/literepo'
+
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
 }

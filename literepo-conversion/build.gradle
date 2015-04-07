@@ -1,4 +1,14 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+description '''\
+Simplify your work with sqlite in android.
+Core library: contains converters and annotations.
+'''
+
+ext {
+    vTestApplicationId = 'ingvar.android.literepo.conversion.test'
+}
 
 android {
 
@@ -11,7 +21,7 @@ android {
         versionCode vGlobalVersionCode
         versionName vGlobalVersionName
 
-        testApplicationId 'ingvar.android.literepo.conversion.test'
+        testApplicationId vTestApplicationId
         testInstrumentationRunner 'android.test.InstrumentationTestRunner'
         testHandleProfiling true
         testFunctionalTest true
@@ -37,4 +47,91 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+android {
+
+    compileSdkVersion vCompileSdkVersion
+    buildToolsVersion vBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion vMinSdkVersion
+        targetSdkVersion vTargetSdkVersion
+        versionCode vGlobalVersionCode
+        versionName vGlobalVersionName
+
+        testApplicationId vTestApplicationId
+        testInstrumentationRunner 'android.test.InstrumentationTestRunner'
+        testHandleProfiling true
+        testFunctionalTest true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name project.name
+                description project.description
+                url 'https://github.com/deadly-cat/literepo'
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'deadly-cat'
+                        name 'Igor Zubenko'
+                        email 'igor.a.zubenko@gmail.com'
+                    }
+                }
+                scm {
+                    connection 'https://github.com/deadly-cat/literepo.git'
+                    developerConnection 'https://github.com/deadly-cat/literepo.git'
+                    url 'https://github.com/deadly-cat/literepo'
+
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
 }
