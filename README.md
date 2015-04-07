@@ -17,7 +17,6 @@ allprojects {
 }
 ```
 
-
 Next add dependency for your module
 ```groovy
 dependencies {
@@ -27,7 +26,6 @@ dependencies {
     compile 'ingvar.android.literepo:literepo-conversion:1.0.0'
 }
 ```
-
 
 For creating request to DB you need to use [**UriBuilder**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/builder/UriBuilder.java).
 ```java
@@ -50,14 +48,12 @@ select col1, col2
 from example_table
 where (col1 = 42 or col1 > 84) and col2 in (1, 2, 3, 4)
 ```
-
 Don't try to use Uri for large lists. Instead use selection and selectionArgs arguments of query method.
 
 **Note**: In this release builder cannot build joins, but in next releases this functionality can be added.
 
 
-Also you need to extend [**LiteProvider.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/LiteProvider.java)
-And override method **provideOpenHelper()**:
+Also you need to extend [**LiteProvider.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/LiteProvider.java) and override method **provideOpenHelper()**:
 ```java
 public class ExampleProvider extends LiteProvider {
     
@@ -73,7 +69,7 @@ public class ExampleProvider extends LiteProvider {
 More examples for builder you can find in the [**BuildersTest.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/androidTest/java/ingvar/android/literepo/test/BuildersTest.java)
 
 
-For using conversion library you need to annotate you Entities fields as [@Column](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/main/java/ingvar/android/literepo/conversion/annotation/Column.java).
+For using conversion library you need to annotate your Entity fields as [@Column](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/main/java/ingvar/android/literepo/conversion/annotation/Column.java).
 ```java
 public class Entity {
     @Column(value = "col_name", type = Type.TEXT, nullable = false)
@@ -90,10 +86,10 @@ ContentValues values = converter.convert(entityInstance);
 
 Entity entity = converter.convert(cursor);
 ```
-**Note**: For now converter not so fast because under the hood it use reflection.
+**Note**: For now converter not so fast because under the hood it use reflection. In the next release it will be replaced for code generation.
 
 
 Examples for conversion you can find in [**ConverterTest.java**](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/androidTest/java/ingvar/android/literepo/conversion/test/ConverterTest.java)
 
 
-Example app in the [**example module**](https://github.com/deadly-cat/literepo/tree/master/examples)
+Example app in the [**example module**](https://github.com/deadly-cat/literepo/tree/master/examples).

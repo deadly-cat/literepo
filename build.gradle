@@ -42,6 +42,8 @@ allprojects {
 final publishedProjects = ['root', 'literepo', 'literepo-conversion']
 configure(allprojects.findAll {publishedProjects.contains(it.name)}) {
 
+    evaluationDependsOn(':' + project.name)
+
     apply plugin: 'com.jfrog.bintray'
 
     group = 'ingvar.android.literepo'

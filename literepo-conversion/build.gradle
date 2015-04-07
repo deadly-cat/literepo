@@ -3,7 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 description '''\
 Simplify your work with sqlite in android.
-Core library: contains converters and annotations.
+Conversion library: contains converters and annotations.
 '''
 
 ext {
