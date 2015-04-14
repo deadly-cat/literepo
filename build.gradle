@@ -54,7 +54,6 @@ configure(allprojects.findAll {publishedProjects.contains(it.name)}) {
         key = vBintrayKey
         configurations = ['archives']
         publish = true
-        subtaskSkipPublish = false
 
         pkg {
             repo = 'maven'
