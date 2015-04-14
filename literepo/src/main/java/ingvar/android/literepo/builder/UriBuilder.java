@@ -97,7 +97,7 @@ public class UriBuilder {
      * Equals operator.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder eq(String column, Object value) {
@@ -108,7 +108,7 @@ public class UriBuilder {
      * Greater than operator.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder gt(String column, Object value) {
@@ -119,7 +119,7 @@ public class UriBuilder {
      * Greater than or equals operator.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder gte(String column, Object value) {
@@ -130,7 +130,7 @@ public class UriBuilder {
      * Lower than operator.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder lt(String column, Object value) {
@@ -141,7 +141,7 @@ public class UriBuilder {
      * Lower than or equals operator.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder lte(String column, Object value) {
@@ -153,7 +153,7 @@ public class UriBuilder {
      * Wraps value to %value%.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder like(String column, Object value) {
@@ -165,7 +165,7 @@ public class UriBuilder {
      * Does not wrap value.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder likeRaw(String column, Object value) {
@@ -176,7 +176,7 @@ public class UriBuilder {
      * Match operator.
      *
      * @param column column name
-     * @param value
+     * @param value value
      * @return builder
      */
     public UriBuilder match(String column, Object value) {

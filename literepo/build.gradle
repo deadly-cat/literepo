@@ -7,6 +7,8 @@ Core library: contains builders and content provider.
 '''
 
 ext {
+    vVersionCode = 2
+    vVersionName = '1.0.1'
     vTestApplicationId = 'ingvar.android.literepo.test'
 }
 
@@ -22,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion vMinSdkVersion
         targetSdkVersion vTargetSdkVersion
-        versionCode 2
-        versionName '1.0.1'
+        versionCode vVersionCode
+        versionName vVersionName
 
         testApplicationId vTestApplicationId
         testInstrumentationRunner 'android.test.InstrumentationTestRunner'

@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+ext {
+    vVersionCode = 1
+    vVersionName = '1.0.0'
+}
+
 android {
 
     compileSdkVersion vCompileSdkVersion
@@ -8,8 +13,8 @@ android {
     defaultConfig {
         minSdkVersion vMinSdkVersion
         targetSdkVersion vTargetSdkVersion
-        versionCode vGlobalVersionCode
-        versionName vGlobalVersionName
+        versionCode vVersionCode
+        versionName vVersionName
         applicationId "ingvar.android.literepo"
     }
 

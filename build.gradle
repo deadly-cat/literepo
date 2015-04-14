@@ -5,8 +5,8 @@ ext {
     vMinSdkVersion = 14
     vTargetSdkVersion = 21
 
-    vGlobalVersionCode = 1
-    vGlobalVersionName = '1.0.0'
+    vVersionCode = 1
+    vVersionName = '1.0.0'
 
     //initialized from local.properties
     vBintrayUser = null
@@ -47,7 +47,7 @@ configure(allprojects.findAll {publishedProjects.contains(it.name)}) {
     apply plugin: 'com.jfrog.bintray'
 
     group = 'ingvar.android.literepo'
-    version = vGlobalVersionName
+    version = project.vVersionName
 
     bintray {
         user = vBintrayUser
