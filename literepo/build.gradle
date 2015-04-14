@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion vMinSdkVersion
         targetSdkVersion vTargetSdkVersion
-        versionCode vGlobalVersionCode
-        versionName vGlobalVersionName
+        versionCode 2
+        versionName '1.0.1'
 
         testApplicationId vTestApplicationId
         testInstrumentationRunner 'android.test.InstrumentationTestRunner'

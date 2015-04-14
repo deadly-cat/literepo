@@ -243,6 +243,16 @@ public class UriBuilder {
      * @return query uri.
      */
     public Uri build() {
+        if(scheme == null) {
+            throw new IllegalStateException("Scheme cannot be null!");
+        }
+        if(authority == null) {
+            throw new IllegalStateException("Authority cannot be null!");
+        }
+        if(table == null) {
+            throw new IllegalStateException("Table cannot be null!");
+        }
+
         return new Uri.Builder()
             .scheme(scheme)
             .authority(authority)
