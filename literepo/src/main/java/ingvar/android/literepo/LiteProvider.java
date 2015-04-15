@@ -32,13 +32,13 @@ public abstract class LiteProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Query query = new Query(selection, selectionArgs).parse(uri);
-        Cursor result = reader.query(extractTableName(uri), projection, query.getSelection(), query.getArgs(), null, null, sortOrder);
+        Cursor result = reader.query(query.getFrom(), projection, query.getSelection(), query.getArgs(), null, null, sortOrder);
         return result;
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        long id = writer.insertOrThrow(extractTableName(uri), null, values);
+        long id = writer.insertOrThrow(new Query(uri).getFrom(), null, values);
         return Uri.withAppendedPath(uri, Long.toString(id));
     }
 
@@ -48,7 +48,7 @@ public abstract class LiteProvider extends ContentProvider {
 
         writer.beginTransaction();
         try {
-            String tableName = extractTableName(uri);
+            String tableName = new Query(uri).getFrom();
             for(ContentValues value : values) {
                 writer.insertOrThrow(tableName, null, value);
                 inserted++;
@@ -63,15 +63,15 @@ public abstract class LiteProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Query query = new Query(selection, selectionArgs).parse(uri);
-        int updated = writer.update(extractTableName(uri), values, query.getSelection(), query.getArgs());
+        Query query = new Query(selection, selectionArgs, uri);
+        int updated = writer.update(query.getFrom(), values, query.getSelection(), query.getArgs());
         return updated;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Query query = new Query(selection, selectionArgs).parse(uri);
-        int deleted = writer.delete(extractTableName(uri), query.getSelection(), query.getArgs());
+        Query query = new Query(selection, selectionArgs, uri);
+        int deleted = writer.delete(query.getFrom(), query.getSelection(), query.getArgs());
         return deleted;
     }
 
@@ -87,15 +87,5 @@ public abstract class LiteProvider extends ContentProvider {
      * @return DB connector
      */
     protected abstract SQLiteOpenHelper provideOpenHelper();
-
-    /**
-     * Extracted table name from Uri.
-     * Default implementation used path as table name.
-     * @param uri - query uri.
-     * @return table name
-     */
-    protected String extractTableName(Uri uri) {
-        return uri.getPath().replaceAll("/", "");
-    }
 
 }

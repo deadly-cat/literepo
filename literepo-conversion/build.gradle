@@ -7,8 +7,8 @@ Conversion library: contains converters and annotations.
 '''
 
 ext {
-    vVersionCode = 1
-    vVersionName = '1.0.0'
+    vVersionCode = vGlobalVersionCode
+    vVersionName = vGlobalVersionName
     vTestApplicationId = 'ingvar.android.literepo.conversion.test'
 }
 

@@ -30,9 +30,9 @@ Next add dependency for your module
 ```groovy
 dependencies {
     //for core library (contains builders and provider)
-    compile 'ingvar.android.literepo:literepo:1.0.1'
+    compile 'ingvar.android.literepo:literepo:1.1.0'
     //for conversion library (contains converters and annotations)
-    compile 'ingvar.android.literepo:literepo-conversion:1.0.0'
+    compile 'ingvar.android.literepo:literepo-conversion:1.1.0'
 }
 ```
 

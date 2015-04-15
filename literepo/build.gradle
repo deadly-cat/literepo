@@ -7,8 +7,8 @@ Core library: contains builders and content provider.
 '''
 
 ext {
-    vVersionCode = 2
-    vVersionName = '1.0.1'
+    vVersionCode = vGlobalVersionCode
+    vVersionName = vGlobalVersionName
     vTestApplicationId = 'ingvar.android.literepo.test'
 }
 

@@ -16,6 +16,16 @@ import ingvar.android.literepo.builder.UriBuilder;
  */
 public class BuildersTest extends TestCase {
 
+    public void testParsingTableName() {
+        Uri uri = new UriBuilder()
+            .authority("example.com")
+            .table("test")
+            .build();
+
+        Query query = new Query(uri);
+        assertEquals("Table name not match", "test", query.getFrom());
+    }
+
     public void testUriBuilder() {
         //f1 = ? and f2 > ? and f3 in (?, ?, ?, ?)
         Uri uri = new UriBuilder()
@@ -59,7 +69,7 @@ public class BuildersTest extends TestCase {
         List<String> expectedValues = Arrays.asList("42", "v1", "v2", "1", "2", "3", "4");
 
         Uri uri = Uri.parse(URI);
-        Query query = new Query("f0 = ?", new String[] {"42"}).parse(uri);
+        Query query = new Query("f0 = ?", new String[] {"42"}, uri);
 
         assertEquals("Mistake in selection", expected, query.getSelection());
         assertEquals("Mistake in args", expectedValues, Arrays.asList(query.getArgs()));
@@ -70,7 +80,7 @@ public class BuildersTest extends TestCase {
         List<String> expectedValues = Arrays.asList("v1", "v11", "v2", "v22");
 
         Uri uri = Uri.parse(URI_OR);
-        Query query = new Query().parse(uri);
+        Query query = new Query(uri);
 
         assertEquals("Mistake in selection", expected, query.getSelection());
         assertEquals("Mistake in args", expectedValues, Arrays.asList(query.getArgs()));
@@ -87,12 +97,27 @@ public class BuildersTest extends TestCase {
             .between("f1", 0, 10)
             .build();
 
-        Query query = new Query().parse(uri);
+        Query query = new Query(uri);
 
         assertEquals("Mistake in selection", expected, query.getSelection());
         assertEquals("Mistake in args", expectedValues, Arrays.asList(query.getArgs()));
     }
 
+    public void testEmptyString() {
+        String expected = "f1 = ?";
+        List<String> expectedValues = Arrays.asList("");
+
+        Uri uri = new UriBuilder()
+            .authority("example.com")
+            .table("test")
+            .eq("f1", "")
+            .build();
+
+        Query query = new Query(uri);
+
+        assertEquals("Mistake in selection", expected, query.getSelection());
+        assertEquals("Mistake in args", expectedValues, Arrays.asList(query.getArgs()));
+    }
 
     private static final String COND_1 =
             "f1" + UriBuilder.DELIMITER_QUERY

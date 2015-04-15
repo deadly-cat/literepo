@@ -16,14 +16,20 @@ public class Query {
 
     private static final String[] EA = {};
 
+    private StringBuilder from;
     private StringBuilder selection;
     private List<String> args;
 
-    /**
-     * Default constructor
-     */
     public Query() {
-        this(null, null);
+        this(null, null, null);
+    }
+
+    public Query(String selection, String[] args) {
+        this(selection, args, null);
+    }
+
+    public Query(Uri uri) {
+        this(null, null, uri);
     }
 
     /**
@@ -31,8 +37,9 @@ public class Query {
      *
      * @param selection selection string
      * @param args selection args
+     * @param uri query uri
      */
-    public Query(String selection, String[] args) {
+    public Query(String selection, String[] args, Uri uri) {
         this.selection = new StringBuilder();
         this.args = new LinkedList<>();
 
@@ -40,6 +47,13 @@ public class Query {
             this.selection.append(selection);
             this.args.addAll(Arrays.asList(args));
         }
+        if(uri != null) {
+            parse(uri);
+        }
+    }
+
+    public String getFrom() {
+        return from.toString();
     }
 
     /**
@@ -65,6 +79,8 @@ public class Query {
      * @return this
      */
     public Query parse(Uri uri) {
+        extractFrom(uri);
+
         String query = uri.getQueryParameter(UriBuilder.PARAM_QUERY);
         if(query != null && !query.isEmpty()) {
             //first split by 'and'
@@ -90,10 +106,23 @@ public class Query {
         return this;
     }
 
+    protected void extractFrom(Uri uri) {
+        //TODO: joins and aliases
+        from = new StringBuilder(uri.getPath().replaceAll("/", ""));
+    }
+
     protected void appendCondition(StringBuilder builder, String raw) {
         String[] condition = raw.split(UriBuilder.DELIMITER_QUERY);
         if(condition.length < 2 || condition.length > 3) {
             throw new IllegalArgumentException("Wrong condition '" + raw + "'");
+        }
+        //empty string
+        if(condition.length == 2 && raw.endsWith(UriBuilder.DELIMITER_QUERY)) {
+            String[] tmp = new String[3];
+            System.arraycopy(condition, 0, tmp, 0, condition.length);
+            tmp[2] = "";
+
+            condition = tmp;
         }
         Operator operator = Operator.fromUri(condition[1]);
 

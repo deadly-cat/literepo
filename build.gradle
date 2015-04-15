@@ -5,8 +5,11 @@ ext {
     vMinSdkVersion = 14
     vTargetSdkVersion = 21
 
-    vVersionCode = 1
-    vVersionName = '1.0.0'
+    vGlobalVersionCode = 3
+    vGlobalVersionName = '1.1.0'
+
+    vVersionCode = vGlobalVersionCode
+    vVersionName = vGlobalVersionName
 
     //initialized from local.properties
     vBintrayUser = null
