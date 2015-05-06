@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 
-import ingvar.android.literepo.builder.Query;
+import ingvar.android.literepo.builder.SqlBuilder;
 
 /**
  * Basic provider. Can process requests created by {@link ingvar.android.literepo.builder.UriBuilder}.
@@ -31,14 +31,16 @@ public abstract class LiteProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Query query = new Query(selection, selectionArgs).parse(uri);
+        SqlBuilder query = new SqlBuilder(selection, selectionArgs).parse(uri);
         Cursor result = reader.query(query.getFrom(), projection, query.getSelection(), query.getArgs(), null, null, sortOrder);
+        //String sql = SQLiteQueryBuilder.buildQueryString(false, query.getFrom(), projection, query.getSelection(), null, null, sortOrder, null);
+        //Cursor result = reader.rawQuery(sql, query.getArgs());
         return result;
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        long id = writer.insertOrThrow(new Query(uri).getFrom(), null, values);
+        long id = writer.insertOrThrow(new SqlBuilder(uri).getFrom(), null, values);
         return Uri.withAppendedPath(uri, Long.toString(id));
     }
 
@@ -48,7 +50,7 @@ public abstract class LiteProvider extends ContentProvider {
 
         writer.beginTransaction();
         try {
-            String tableName = new Query(uri).getFrom();
+            String tableName = new SqlBuilder(uri).getFrom();
             for(ContentValues value : values) {
                 writer.insertOrThrow(tableName, null, value);
                 inserted++;
@@ -63,14 +65,14 @@ public abstract class LiteProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Query query = new Query(selection, selectionArgs, uri);
+        SqlBuilder query = new SqlBuilder(selection, selectionArgs, uri);
         int updated = writer.update(query.getFrom(), values, query.getSelection(), query.getArgs());
         return updated;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Query query = new Query(selection, selectionArgs, uri);
+        SqlBuilder query = new SqlBuilder(selection, selectionArgs, uri);
         int deleted = writer.delete(query.getFrom(), query.getSelection(), query.getArgs());
         return deleted;
     }

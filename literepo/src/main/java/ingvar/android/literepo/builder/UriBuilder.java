@@ -2,52 +2,29 @@ package ingvar.android.literepo.builder;
 
 import android.net.Uri;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Simple query builder. Parsed by {@link ingvar.android.literepo.builder.Query}
+ * Simple query builder. Parsed by {@link SqlBuilder}
  *
  * Created by Igor Zubenko on 2015.03.25.
  */
 public class UriBuilder {
 
-    /**
-     * name of parameter in the query
-     */
+    public static final String PATH = "generated";
+    public static final String PARAM_TABLE = "t";
     public static final String PARAM_QUERY = "q";
-    /**
-     * splitter for elements in the lists.
-     */
-    public static final String DELIMITER_LIST = "~d";
-    /**
-     * splitter for condition sections. E.q.: field.operator.value
-     */
-    public static final String DELIMITER_QUERY = "~q";
-    /**
-     * 'AND' operator
-     */
-    public static final String QUERY_AND = "~a";
-    /**
-     * 'OR' operator
-     */
-    public static final String QUERY_OR = "~o";
-
-    /**
-     * Reserved sequences what cannot be used in the query(fields names or values)
-     */
-    public static final List<String> RESERVED = Collections.unmodifiableList(Arrays.asList(DELIMITER_LIST, DELIMITER_QUERY, QUERY_AND, QUERY_OR));
+    public static final String PARAM_TABLE_COUNT = "tc";
 
     private String scheme;
     private String authority;
-    private String table;
-    private StringBuilder query;
+    private Table table;
+    private List<Table> join;
 
     public UriBuilder() {
-        query = new StringBuilder();
         scheme = "content"; //default
+        join = new ArrayList<>(1);
     }
 
     /**
@@ -73,168 +50,55 @@ public class UriBuilder {
     }
 
     /**
-     * Table name. Set as path in the {@link android.net.Uri}.
+     * Set table name.
      *
-     * @param table table name
+     * @param name table name
+     * @param alias table alias or null
      * @return builder
      */
-    public UriBuilder table(String table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
-     * Added 'OR' between prev and next conditions instead of 'AND'.
-     *
-     * @return builder
-     */
-    public UriBuilder or() {
-        query.append(QUERY_OR);
-        return this;
-    }
-
-    /**
-     * Equals operator.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder eq(String column, Object value) {
-        return condition(column, Operator.EQUALS, value.toString());
-    }
-
-    /**
-     * Greater than operator.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder gt(String column, Object value) {
-        return condition(column, Operator.GREATER_THAN, value.toString());
-    }
-
-    /**
-     * Greater than or equals operator.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder gte(String column, Object value) {
-        return condition(column, Operator.GREATER_THAN_OR_EQUALS, value.toString());
-    }
-
-    /**
-     * Lower than operator.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder lt(String column, Object value) {
-        return condition(column, Operator.LOWER_THAN, value.toString());
-    }
-
-    /**
-     * Lower than or equals operator.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder lte(String column, Object value) {
-        return condition(column, Operator.LOWER_THAN_OR_EQUALS, value.toString());
-    }
-
-    /**
-     * Like operator.
-     * Wraps value to %value%.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder like(String column, Object value) {
-        return condition(column, Operator.LIKE, "%" + value.toString() + "%");
-    }
-
-    /**
-     * Like operator.
-     * Does not wrap value.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder likeRaw(String column, Object value) {
-        return condition(column, Operator.LIKE, value.toString());
-    }
-
-    /**
-     * Match operator.
-     *
-     * @param column column name
-     * @param value value
-     * @return builder
-     */
-    public UriBuilder match(String column, Object value) {
-        return condition(column, Operator.MATCH, value.toString());
-    }
-
-    /**
-     * IN operator.
-     *
-     * @param column column name
-     * @param values collection of values. Be aware: for big collections prefer using (selection, selectionArgs)
-     * @return builder
-     */
-    public UriBuilder in(String column, Collection values) {
-        StringBuilder value = new StringBuilder();
-        for(Object v : values) {
-            if(value.length() > 0) {
-                value.append(DELIMITER_LIST);
-            }
-            checkReserved(v.toString());
-            value.append(v);
+    public UriBuilder table(String name, String alias) {
+        if(table == null) {
+            table = new Table();
         }
-        return condition(column, Operator.IN, value.toString(), false);
+        table.name = name;
+        table.alias = alias;
+        return this;
     }
 
     /**
-     * Between operator.
+     * See {@link UriBuilder#table(String, String)}
      *
-     * @param column column name
-     * @param min min value
-     * @param max max value
+     * @param name table name
      * @return builder
      */
-    public UriBuilder between(String column, Object min, Object max) {
-        checkReserved(min.toString());
-        checkReserved(max.toString());
-        String value = min.toString() + DELIMITER_LIST + max.toString();
-        return condition(column, Operator.BETWEEN, value, false);
+    public UriBuilder table(String name) {
+        return table(name, null);
     }
 
     /**
-     * IS NULL operator.
+     * Create query for table.
+     * For return instance of {@link UriBuilder} call {@link UriQuery#end()} after setting params.
      *
-     * @param column column name
-     * @return builder
+     * @return query instance
      */
-    public UriBuilder isNull(String column) {
-        return condition(column, Operator.IS_NULL, null);
+    public UriQuery query() {
+        if(table == null) {
+            table = new Table();
+        }
+        return table.query = new UriQuery(this);
     }
 
     /**
-     * IS NOT NULL operator.
+     * Add join.
      *
-     * @param column column name
-     * @return builder
+     * @param name table name
+     * @param alias table alias
+     * @return join query
      */
-    public UriBuilder isNotNull(String column) {
-        return condition(column, Operator.IS_NOT_NULL, null);
+    public UriQuery join(String name, String alias) {
+        Table table = new Table(name, alias);
+        join.add(table);
+        return table.query = new UriQuery(this);
     }
 
     /**
@@ -252,44 +116,43 @@ public class UriBuilder {
         if(table == null) {
             throw new IllegalStateException("Table cannot be null!");
         }
-
-        return new Uri.Builder()
-            .scheme(scheme)
-            .authority(authority)
-            .path(table)
-            .appendQueryParameter(PARAM_QUERY, query.toString())
-            .build();
+        Uri.Builder builder = new Uri.Builder()
+                .scheme(scheme)
+                .authority(authority)
+                .path(PATH);
+        builder.appendQueryParameter(PARAM_TABLE_COUNT, Integer.toString(join.size() + 1));
+        int index = 0;
+        createTableQuery(builder, index++, table);
+        for(Table j : join) {
+            createTableQuery(builder, index++, j);
+        }
+        return builder.build();
     }
 
-    protected UriBuilder condition(String column, Operator operator, String value) {
-        return condition(column, operator, value, true);
+    protected void createTableQuery(Uri.Builder builder, int index, Table table) {
+        String tableQuery = table.name;
+        if(table.alias != null && !table.alias.isEmpty()) {
+            tableQuery += "." + table.alias;
+        }
+        builder.appendQueryParameter(PARAM_TABLE + index, tableQuery);
+        if(table.query != null && !table.query.isEmpty()) {
+            builder.appendQueryParameter(PARAM_QUERY + index, table.query.createQuery());
+        }
     }
 
-    protected UriBuilder condition(String column, Operator operator, String value, boolean checkValue) {
-        checkReserved(column);
-        if(value != null && checkValue) {
-            checkReserved(value);
+    protected class Table {
+
+        private String name;
+        private String alias;
+        private UriQuery query;
+
+        public Table() {}
+
+        public Table(String name, String alias) {
+            this.name = name;
+            this.alias = alias;
         }
 
-        if(query.length() > 0) {
-            String tmp = query.toString();
-            if(!(tmp.endsWith(QUERY_AND) || tmp.endsWith(QUERY_OR))) {
-                query.append(QUERY_AND);
-            }
-        }
-        query.append(column).append(DELIMITER_QUERY).append(operator.toUri());
-        if(value != null) {
-            query.append(DELIMITER_QUERY).append(value);
-        }
-        return this;
-    }
-
-    protected void checkReserved(String str) {
-        for(String reserved : RESERVED) {
-            if(str.contains(reserved)) {
-                throw new IllegalArgumentException(String.format("Column/Value '%s' contains reserved sequence '%s'", str, reserved));
-            }
-        }
     }
 
 }

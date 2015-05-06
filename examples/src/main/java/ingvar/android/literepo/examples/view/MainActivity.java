@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import ingvar.android.literepo.builder.UriBuilder;
+import ingvar.android.literepo.builder.UriQuery;
 import ingvar.android.literepo.examples.R;
 import ingvar.android.literepo.examples.storage.ExampleContract;
 import ingvar.android.literepo.examples.widget.DividerItemDecoration;
@@ -140,13 +141,14 @@ public class MainActivity extends RoboActivity {
             UriBuilder builder = new UriBuilder()
                     .authority(ExampleContract.AUTHORITY)
                     .table(ExampleContract.Person.TABLE_NAME);
+            UriQuery query = builder.query();
             if(name != null && !name.isEmpty()) {
-                builder.like(ExampleContract.Person.Col.NAME, name);
+                query.like(ExampleContract.Person.Col.NAME, name);
             }
             if(birthday != null && !birthday.isEmpty()) {
                 try {
                     Date date = DATE_FORMAT.get().parse(birthday);
-                    builder.eq(ExampleContract.Person.Col.BIRTHDAY, date.getTime());
+                    query.eq(ExampleContract.Person.Col.BIRTHDAY, date.getTime());
                 } catch (ParseException e) {}
             }
             return new CursorLoader(MainActivity.this, builder.build(), ExampleContract.Person.PROJECTION, null, null, ExampleContract.Person.SORT);
