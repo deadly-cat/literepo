@@ -193,7 +193,6 @@ public class SqlBuilder {
             builder.append(Uri.decode(raw.substring(UriQuery.VALUE_SQL.length())));
 
         } else {
-
             String[] condition = raw.split(UriQuery.DELIMITER_QUERY);
             if (condition.length < 2 || condition.length > 3) {
                 throw new IllegalArgumentException("Wrong condition '" + raw + "'");

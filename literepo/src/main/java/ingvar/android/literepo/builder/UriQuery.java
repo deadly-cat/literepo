@@ -263,6 +263,8 @@ public class UriQuery {
      * @return query
      */
     public UriQuery raw(String rawSql) {
+        checkReserved(rawSql);
+
         if(query.length() > 0) {
             String tmp = query.toString();
             if(!(tmp.endsWith(QUERY_AND) || tmp.endsWith(QUERY_OR))) {
