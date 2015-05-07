@@ -32,7 +32,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
             .authority("example.com")
             .table("example")
-            .query()
+            .where()
                 .eq("f1", "v1")
                 .gt("f2", "v2")
                 .in("f3", Arrays.asList(1, 2, 3, 4))
@@ -47,7 +47,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
             .authority("example.com")
             .table("example")
-            .query()
+            .where()
                 .eq("f1", "v1").or().eq("f1", "v11")
                 .gt("f2", "v2").or().gt("f2", "v22")
             .end()
@@ -61,7 +61,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
             .authority("example.com")
             .table("example")
-            .query()
+            .where()
                 .eq("f1", "v1")
                 .or().eq("f1", "v11")
                 .or().gt("f2", "v2")
@@ -114,7 +114,7 @@ public class BuildersTest extends TestCase {
             .scheme("content")
             .authority("example.com")
             .table("example")
-            .query().between("f1", 0, 10).end()
+            .where().between("f1", 0, 10).end()
             .build();
 
         SqlBuilder query = new SqlBuilder(uri);
@@ -130,7 +130,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
         .authority("example.com")
         .table("test")
-        .query().eq("f1", "").end()
+        .where().eq("f1", "").end()
         .build();
 
         SqlBuilder query = new SqlBuilder(uri);
@@ -158,7 +158,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
         .authority("example.com")
         .table("example", "alias")
-        .query()
+        .where()
             .eq("f1", "v1")
             .gt("f2", "v2")
         .end()
@@ -181,7 +181,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
         .authority("example.com")
         .table("example")
-        .query().eq("f1", value).end()
+        .where().eq("f1", value).end()
         .build();
 
         assertEquals("Built Uri not match", URI_VALUE_SQL, uri.toString());
@@ -199,7 +199,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
         .authority("example.com")
         .table("test")
-        .query().in("f1", value).end()
+        .where().in("f1", value).end()
         .build();
 
         String expected = "f1 in (select field from test_table)";
@@ -217,7 +217,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
         .authority("example.com")
         .table("example")
-        .query()
+        .where()
             .gt("f0", "v0")
             .raw(rawQuery)
             .eq("f2", "v2")
@@ -241,7 +241,7 @@ public class BuildersTest extends TestCase {
         Uri uri = new UriBuilder()
         .authority("example.com")
         .table("example1", "a1")
-        .query()
+        .where()
             .eq("f1", "v1")
             .gt("f2", "v2")
         .end()

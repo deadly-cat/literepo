@@ -81,7 +81,7 @@ public class UriBuilder {
      *
      * @return query instance
      */
-    public UriQuery query() {
+    public UriQuery where() {
         if(table == null) {
             table = new Table();
         }

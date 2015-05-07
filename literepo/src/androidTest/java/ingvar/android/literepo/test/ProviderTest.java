@@ -41,7 +41,7 @@ public class ProviderTest extends ProviderTestCase2<TestProvider> {
         Uri uri = new UriBuilder()
         .authority(AUTHORITY)
         .table("parent")
-        .query().eq(Parent.Col.NAME, "test").end()
+        .where().eq(Parent.Col.NAME, "test").end()
         .build();
 
         cursor = getMockContentResolver().query(uri, Parent.PROJECTION, null, null, null);
@@ -58,7 +58,7 @@ public class ProviderTest extends ProviderTestCase2<TestProvider> {
         Uri uri = new UriBuilder()
         .authority(AUTHORITY)
         .table(Parent.TABLE_NAME, "p")
-        .query().eq(Parent.Col.NAME, "parent").end()
+        .where().eq(Parent.Col.NAME, "parent").end()
         .join(Child.TABLE_NAME, "c")
             .eq(Child.Col.PARENT_ID, new UriQuery.SqlValue("p.rowid"))
         .end()
@@ -110,7 +110,7 @@ public class ProviderTest extends ProviderTestCase2<TestProvider> {
         Uri uri = new UriBuilder()
         .authority(AUTHORITY)
         .table(Parent.TABLE_NAME)
-        .query().eq("rowid", 1).end()
+        .where().eq("rowid", 1).end()
         .build();
 
         getMockContentResolver().update(uri, values, null, null);
@@ -128,7 +128,7 @@ public class ProviderTest extends ProviderTestCase2<TestProvider> {
         Uri uri = new UriBuilder()
         .authority(AUTHORITY)
         .table(Parent.TABLE_NAME)
-        .query().eq(Parent.Col.NAME, "parent").end()
+        .where().eq(Parent.Col.NAME, "parent").end()
         .build();
 
         getMockContentResolver().delete(uri, null, null);

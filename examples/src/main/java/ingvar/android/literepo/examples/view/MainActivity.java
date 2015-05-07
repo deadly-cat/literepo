@@ -141,7 +141,7 @@ public class MainActivity extends RoboActivity {
             UriBuilder builder = new UriBuilder()
                     .authority(ExampleContract.AUTHORITY)
                     .table(ExampleContract.Person.TABLE_NAME);
-            UriQuery query = builder.query();
+            UriQuery query = builder.where();
             if(name != null && !name.isEmpty()) {
                 query.like(ExampleContract.Person.Col.NAME, name);
             }
