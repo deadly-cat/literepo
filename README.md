@@ -79,7 +79,7 @@ Uri request = new UriBuilder()
 Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
 ```
 
-UriQuery.SqlValue used to tell builder what this value is a plain sql. Also you can use UriQuery.raw(String sql) method for plain sql queries.
+UriQuery.SqlValue used to tell builder what this value is a plain sql. Also you can use UriQuery.raw(String sql, Object... args) method for plain sql queries.
 
 And in the sql it look like this:
 ```sql

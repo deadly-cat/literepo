@@ -210,16 +210,16 @@ public class BuildersTest extends TestCase {
     }
 
     public void testRawSql() {
-        String rawQuery = "f1 = (select * from another_table)";
+        String rawQuery = "f1 = (select * from another_table where col1 = ?)";
         String expected = "f0 > ? and " + rawQuery + " and f2 = ?";
-        List<String> expectedValues = Arrays.asList("v0", "v2");
+        List<String> expectedValues = Arrays.asList("v0", "fromRaw", "v2");
 
         Uri uri = new UriBuilder()
         .authority("example.com")
         .table("example")
         .where()
             .gt("f0", "v0")
-            .raw(rawQuery)
+            .raw(rawQuery, "fromRaw")
             .eq("f2", "v2")
         .end()
         .build();

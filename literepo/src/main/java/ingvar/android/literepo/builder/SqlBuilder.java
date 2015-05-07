@@ -190,7 +190,13 @@ public class SqlBuilder {
      */
     protected void appendCondition(StringBuilder builder, String alias, String raw) {
         if(raw.startsWith(UriQuery.VALUE_SQL)) {
-            builder.append(Uri.decode(raw.substring(UriQuery.VALUE_SQL.length())));
+            String[] condition = raw.substring(UriQuery.VALUE_SQL.length()).split(UriQuery.DELIMITER_QUERY);
+            builder.append(Uri.decode(condition[0]));
+            if(condition.length == 2) {
+                for (String v : condition[1].split(UriQuery.DELIMITER_LIST)) {
+                    args.add(v);
+                }
+            }
 
         } else {
             String[] condition = raw.split(UriQuery.DELIMITER_QUERY);
@@ -213,10 +219,10 @@ public class SqlBuilder {
             builder.append(condition[0]);
             builder.append(" ").append(operator.toSql());
             if (condition.length == 3) { //contains value
-                String value = condition[2];
+                String value = Uri.decode(condition[2]);
 
                 if (value.startsWith(UriQuery.VALUE_SQL)) {
-                    value = Uri.decode(value.substring(UriQuery.VALUE_SQL.length()));
+                    value = value.substring(UriQuery.VALUE_SQL.length());
                     if(Operator.LIST_OPERATORS.contains(operator)) {
                         builder.append(" (").append(value).append(")");
                     } else {

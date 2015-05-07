@@ -203,7 +203,7 @@ public class UriQuery {
             if(value.length() > 0) {
                 value.append(DELIMITER_LIST);
             }
-            checkReserved(v.toString());
+            checkReserved(v);
             value.append(v);
         }
         return condition(column, Operator.IN, value, false);
@@ -262,8 +262,11 @@ public class UriQuery {
      * @param rawSql sql query
      * @return query
      */
-    public UriQuery raw(String rawSql) {
+    public UriQuery raw(String rawSql, Object... args) {
         checkReserved(rawSql);
+        for(Object arg : args) {
+            checkReserved(arg);
+        }
 
         if(query.length() > 0) {
             String tmp = query.toString();
@@ -272,6 +275,18 @@ public class UriQuery {
             }
         }
         query.append(VALUE_SQL).append(rawSql);
+        if(args.length > 0) {
+            StringBuilder value = new StringBuilder();
+            query.append(DELIMITER_QUERY);
+            for(Object a : args) {
+                if(value.length() > 0) {
+                    value.append(DELIMITER_LIST);
+                }
+                checkReserved(a);
+                value.append(a);
+            }
+            query.append(value);
+        }
         return this;
     }
 
