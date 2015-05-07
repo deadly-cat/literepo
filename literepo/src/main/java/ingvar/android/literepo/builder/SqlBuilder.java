@@ -20,26 +20,22 @@ public class SqlBuilder {
     private StringBuilder selection;
     private List<String> args;
 
-    public SqlBuilder() {
-        this(null, null, null);
+    public SqlBuilder(Uri uri) {
+        this(uri, null, null);
     }
 
     public SqlBuilder(String selection, String[] args) {
-        this(selection, args, null);
-    }
-
-    public SqlBuilder(Uri uri) {
-        this(null, null, uri);
+        this(null, selection, args);
     }
 
     /**
      * Add to result query data from query arguments.
      *
+     * @param uri query uri
      * @param selection selection string
      * @param args selection args
-     * @param uri query uri
      */
-    public SqlBuilder(String selection, String[] args, Uri uri) {
+    public SqlBuilder(Uri uri, String selection, String[] args) {
         this.selection = new StringBuilder();
         this.args = new ArrayList<>();
         this.from = new StringBuilder();
@@ -52,11 +48,17 @@ public class SqlBuilder {
         }
     }
 
+    /**
+     * Get from statement.
+     *
+     * @return from string
+     */
     public String getFrom() {
         return from.toString();
     }
 
     /**
+     * Get where statement.
      *
      * @return selection string
      */
@@ -65,6 +67,7 @@ public class SqlBuilder {
     }
 
     /**
+     * Get args for replacing ?s.
      *
      * @return selection args
      */
@@ -80,7 +83,7 @@ public class SqlBuilder {
      * @param uri Query uri
      * @return this
      */
-    public SqlBuilder parse(Uri uri) {
+    protected SqlBuilder parse(Uri uri) {
         String path = uri.getPath().replaceAll("/", "");
 
         if(UriBuilder.PATH.equals(path)) {
@@ -113,7 +116,7 @@ public class SqlBuilder {
      * @param args selection args
      * @return this
      */
-    public SqlBuilder appendSelection(String selection, String... args) {
+    protected SqlBuilder appendSelection(String selection, String... args) {
         if(this.selection.length() > 0) {
             this.selection.append(" and ");
         }
@@ -123,10 +126,10 @@ public class SqlBuilder {
     }
 
     /**
-     * parse table name and alias from uri query parameter
+     * Parse table name and alias from uri query parameter
      *
      * @param builder builder
-     * @param rawTable uri query value
+     * @param rawTable uri query value. See {@link UriBuilder#createTableQuery(Uri.Builder, int, UriBuilder.Table)}
      * @return table alias
      */
     protected String parseTable(StringBuilder builder, String rawTable) {
@@ -144,6 +147,13 @@ public class SqlBuilder {
         return alias;
     }
 
+    /**
+     * Parse query from uri query parameter and append alias to columns if it needed.
+     *
+     * @param builder builder
+     * @param tableAlias table alias
+     * @param rawQuery uri query value See {@link UriBuilder#createTableQuery(Uri.Builder, int, UriBuilder.Table)}
+     */
     protected void parseQuery(StringBuilder builder, String tableAlias, String rawQuery) {
         if(rawQuery == null || rawQuery.isEmpty()) {
             return;
@@ -171,6 +181,13 @@ public class SqlBuilder {
         }
     }
 
+    /**
+     * Append condition to sql query ('where' or 'join' statement).
+     *
+     * @param builder builder
+     * @param alias table alias
+     * @param raw string from uri
+     */
     protected void appendCondition(StringBuilder builder, String alias, String raw) {
         if(raw.startsWith(UriQuery.VALUE_SQL)) {
             builder.append(Uri.decode(raw.substring(UriQuery.VALUE_SQL.length())));

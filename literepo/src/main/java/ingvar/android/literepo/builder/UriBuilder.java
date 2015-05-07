@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class UriBuilder {
 
-    public static final String PATH = "generated";
+    public static final String PATH = "lrg";
     public static final String PARAM_TABLE = "t";
     public static final String PARAM_QUERY = "q";
     public static final String PARAM_TABLE_COUNT = "tc";

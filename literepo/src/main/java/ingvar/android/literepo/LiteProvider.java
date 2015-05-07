@@ -31,10 +31,8 @@ public abstract class LiteProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        SqlBuilder query = new SqlBuilder(selection, selectionArgs).parse(uri);
+        SqlBuilder query = new SqlBuilder(uri, selection, selectionArgs);
         Cursor result = reader.query(query.getFrom(), projection, query.getSelection(), query.getArgs(), null, null, sortOrder);
-        //String sql = SQLiteQueryBuilder.buildQueryString(false, query.getFrom(), projection, query.getSelection(), null, null, sortOrder, null);
-        //Cursor result = reader.rawQuery(sql, query.getArgs());
         return result;
     }
 
@@ -65,14 +63,14 @@ public abstract class LiteProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        SqlBuilder query = new SqlBuilder(selection, selectionArgs, uri);
+        SqlBuilder query = new SqlBuilder(uri, selection, selectionArgs);
         int updated = writer.update(query.getFrom(), values, query.getSelection(), query.getArgs());
         return updated;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        SqlBuilder query = new SqlBuilder(selection, selectionArgs, uri);
+        SqlBuilder query = new SqlBuilder(uri, selection, selectionArgs);
         int deleted = writer.delete(query.getFrom(), query.getSelection(), query.getArgs());
         return deleted;
     }

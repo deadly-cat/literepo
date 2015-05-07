@@ -76,7 +76,7 @@ public class BuildersTest extends TestCase {
         List<String> expectedValues = Arrays.asList("42");
         Uri uri = Uri.parse("content://example.com/example_path?some_param=some_value");
 
-        SqlBuilder query = new SqlBuilder("f0 = ?", new String[] {"42"}, uri);
+        SqlBuilder query = new SqlBuilder(uri, "f0 = ?", new String[] {"42"});
 
         assertEquals("Mistake in selection", expected, query.getSelection());
         assertEquals("Mistake in args", expectedValues, Arrays.asList(query.getArgs()));
@@ -88,7 +88,7 @@ public class BuildersTest extends TestCase {
         List<String> expectedValues = Arrays.asList("v1", "v2", "1", "2", "3", "4", "42");
 
         Uri uri = Uri.parse(URI);
-        SqlBuilder query = new SqlBuilder("f0 = ?", new String[] {"42"}, uri);
+        SqlBuilder query = new SqlBuilder(uri, "f0 = ?", new String[] {"42"});
 
         assertEquals("Mistake in selection", expected, query.getSelection());
         assertEquals("Mistake in args", expectedValues, Arrays.asList(query.getArgs()));
@@ -269,7 +269,7 @@ public class BuildersTest extends TestCase {
         String expectedWhere = "a1.f1 = ? and a1.f2 > ? and f0 = ?";
         List<String> expectedValues = Arrays.asList("ve2", "v1", "v2", "42");
 
-        SqlBuilder query = new SqlBuilder("f0 = ?", new String[] {"42"}, uri);
+        SqlBuilder query = new SqlBuilder(uri, "f0 = ?", new String[] {"42"});
 
         assertEquals("Mistake in from", expectedFrom, query.getFrom());
         assertEquals("Mistake in selection", expectedWhere, query.getSelection());
@@ -305,31 +305,31 @@ public class BuildersTest extends TestCase {
                     + "1" + UriQuery.DELIMITER_LIST + "2" + UriQuery.DELIMITER_LIST + "3" + UriQuery.DELIMITER_LIST + "4";
 
     //f1 = ? and f2 > ? and f3 in (?, ?, ?, ?)
-    private static final String URI = "content://example.com/generated?"
+    private static final String URI = "content://example.com/" + UriBuilder.PATH + "?"
         + UriBuilder.PARAM_TABLE_COUNT + "=1&"
         + UriBuilder.PARAM_TABLE + "0=example&"
         + UriBuilder.PARAM_QUERY + "0=" + COND_1 + UriQuery.QUERY_AND + COND_2 + UriQuery.QUERY_AND + COND_3;
 
     //(f1 = ? or f1 = ?) and (f2 > ? or f2 > ?)
-    private static final String URI_OR = "content://example.com/generated?"
+    private static final String URI_OR = "content://example.com/" + UriBuilder.PATH + "?"
         + UriBuilder.PARAM_TABLE_COUNT + "=1&"
         + UriBuilder.PARAM_TABLE + "0=example&"
         + UriBuilder.PARAM_QUERY + "0=" + COND_1 + UriQuery.QUERY_OR + COND_11 + UriQuery.QUERY_AND + COND_2 + UriQuery.QUERY_OR + COND_22;
 
     //(f1 = ? or f1 = ? or f2 > ?)
-    private static final String URI_OR_2 = "content://example.com/generated?"
+    private static final String URI_OR_2 = "content://example.com/" + UriBuilder.PATH + "?"
         + UriBuilder.PARAM_TABLE_COUNT + "=1&"
         + UriBuilder.PARAM_TABLE + "0=example&"
         + UriBuilder.PARAM_QUERY + "0=" + COND_1 + UriQuery.QUERY_OR + COND_11 + UriQuery.QUERY_OR + COND_2;
 
     //alias.f1 = ? and alias.f2 > ?
-    private static final String URI_ALIAS = "content://example.com/generated?"
+    private static final String URI_ALIAS = "content://example.com/" + UriBuilder.PATH + "?"
         + UriBuilder.PARAM_TABLE_COUNT + "=1&"
         + UriBuilder.PARAM_TABLE + "0=example.alias&"
         + UriBuilder.PARAM_QUERY + "0=" + COND_1 + UriQuery.QUERY_AND + COND_2;
 
     //f1 = (select field from test_table)
-    private static final String URI_VALUE_SQL = "content://example.com/generated?"
+    private static final String URI_VALUE_SQL = "content://example.com/" + UriBuilder.PATH + "?"
         + UriBuilder.PARAM_TABLE_COUNT + "=1&"
         + UriBuilder.PARAM_TABLE + "0=example&"
         + UriBuilder.PARAM_QUERY + "0=f1"+UriQuery.DELIMITER_QUERY + Operator.EQUALS.toUri() + UriQuery.DELIMITER_QUERY
@@ -341,7 +341,7 @@ public class BuildersTest extends TestCase {
     //  join example4 as a4
     //  join example5 as a5 on (a5.f5 in (select * from some_table))
     //where a1.f1 = ? and a2.f2 > ?
-    private static final String URI_JOIN = "content://example.com/generated?"
+    private static final String URI_JOIN = "content://example.com/" + UriBuilder.PATH + "?"
         + UriBuilder.PARAM_TABLE_COUNT + "=5&"
         + UriBuilder.PARAM_TABLE + "0=example1.a1&"
         + UriBuilder.PARAM_QUERY + "0=" + COND_1 + UriQuery.QUERY_AND + COND_2 + "&"

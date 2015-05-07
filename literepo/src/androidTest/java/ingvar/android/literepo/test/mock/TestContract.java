@@ -14,6 +14,7 @@ public class TestContract {
     public static class Parent {
 
         public static final String TABLE_NAME = "parent";
+        public static final String TABLE_ALIAS = "p";
         public static final Uri CONTENT_URI = Uri.withAppendedPath(URI, TABLE_NAME);
         public static final String[] PROJECTION = {"rowid as " + Col._ID, Col.NAME};
 
@@ -26,8 +27,10 @@ public class TestContract {
     public static class Child {
 
         public static final String TABLE_NAME = "child";
+        public static final String TABLE_ALIAS = "c";
         public static final Uri CONTENT_URI = Uri.withAppendedPath(URI, TABLE_NAME);
         public static final String[] PROJECTION = {"rowid as " + Col._ID, Col.PARENT_ID, Col.NAME};
+        public static final String[] PROJECTION_ALIASED = {"c.rowid as id", "p.name as parent_name", "c.name"};
 
         public static class Col implements BaseColumns {
             public static final String PARENT_ID = "parent_id";
