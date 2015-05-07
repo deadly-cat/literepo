@@ -231,6 +231,19 @@ public class BuildersTest extends TestCase {
         assertEquals("Mistake in from", "example", query.getFrom());
     }
 
+    public void testRawSql2() {
+        String rawQuery = "(0 = cast(? as integer) or (strftime('%%s', 'now') * 1000 - %s) <= cast(? as integer))";
+
+        Uri uri = new UriBuilder()
+        .authority("example.com")
+        .table("example")
+        .where().raw(rawQuery).end()
+        .build();
+
+        SqlBuilder query = new SqlBuilder(uri);
+        assertEquals("Mistake in selection", rawQuery, query.getSelection());
+    }
+
     public void testJoin() {
         //from example1 as a1
         //  join example2 as a2 on ((a2.f1 = a1.fe1 or a2.f2 > ve2))
