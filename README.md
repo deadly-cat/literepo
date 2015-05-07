@@ -43,9 +43,11 @@ String[] projection = "col1, col2";
 Uri request = new UriBuilder()
     .authority("example.provider")
     .table("example_table")
-    .eq("col1", "42")
-    .or().gt("col1", "84")
-    .in("col2", Arrays.asList(1, 2, 3, 4))
+    .query()
+        .eq("col1", "42")
+        .or().gt("col1", "84")
+        .in("col2", Arrays.asList(1, 2, 3, 4))
+    .end()
     .build();
     
 Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -57,10 +59,35 @@ select col1, col2
 from example_table
 where (col1 = 42 or col1 > 84) and col2 in (1, 2, 3, 4)
 ```
-Don't try to use Uri for large lists. Instead use selection and selectionArgs arguments of query method.
 
-**Note**: In this release builder cannot build joins, but in next releases this functionality can be added.
+Joined queries is same easy:
+```java
+String[] projection = "col1, col2";
 
+Uri request = new UriBuilder()
+    .authority("example.provider")
+    .table("example_parent", "p")
+    .query()
+        .eq("col1", "42")
+        .or().gt("col1", "84")
+    .end()
+    .join("example_child", "c")
+        .eq("parent_id", new UriQuery.SqlValue("p._id"))
+    .end()
+    .build();
+    
+Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+```
+
+UriQuery.SqlValue used to tell builder what this value is a plain sql. Also you can use UriQuery.raw(String sql) method for plain sql queries.
+
+And in the sql it look like this:
+```sql
+select *
+from example_parent as p
+join example_child as c on (c.parent_id = p._id)
+where (col1 = 42 or col1 > 84)
+```
 
 Also you need to extend [**LiteProvider.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/LiteProvider.java) and override method **provideOpenHelper()**:
 ```java
@@ -75,7 +102,7 @@ public class ExampleProvider extends LiteProvider {
 ```
 
 
-More examples for builder you can find in the [**BuildersTest.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/androidTest/java/ingvar/android/literepo/test/BuildersTest.java)
+More examples for builder you can find in the [**unit tests**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/androidTest/java/ingvar/android/literepo/test/)
 
 
 ####Conversion (annotations and converters)
