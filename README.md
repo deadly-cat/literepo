@@ -67,7 +67,7 @@ String[] projection = "col1, col2";
 Uri request = new UriBuilder()
     .authority("example.provider")
     .table("example_parent", "p")
-    .query()
+    .where()
         .eq("col1", "42")
         .or().gt("col1", "84")
     .end()
