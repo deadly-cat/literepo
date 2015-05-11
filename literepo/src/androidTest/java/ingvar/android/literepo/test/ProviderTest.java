@@ -72,6 +72,59 @@ public class ProviderTest extends ProviderTestCase2<TestProvider> {
         assertEquals("Child name mismatch", "child", CursorCommon.string(cursor, "c.name"));
     }
 
+    public void testLeftJoinedQuery() {
+        write("insert into parent(name) values ('parent')");
+        write("insert into parent(name) values ('parent2')");
+        write("insert into child(parent_id, name) values (1, 'child')");
+
+        Uri uri = new UriBuilder()
+        .authority(AUTHORITY)
+        .table(Parent.TABLE_NAME, "p")
+        .leftJoin(Child.TABLE_NAME, "c")
+            .eq(Child.Col.PARENT_ID, new UriQuery.SqlValue("p.rowid"))
+        .end()
+        .build();
+
+        cursor = getMockContentResolver().query(uri, Child.PROJECTION_ALIASED, null, null, null);
+        assertEquals("Values more than required", 2, cursor.getCount());
+
+        assertTrue("Value not found", cursor.moveToFirst());
+        assertEquals("ID mismatch", 1, CursorCommon.integer(cursor, "c.id"));
+        assertEquals("Parent name mismatch", "parent", CursorCommon.string(cursor, "c.parent_name"));
+        assertEquals("Child name mismatch", "child", CursorCommon.string(cursor, "c.name"));
+
+        assertTrue("Value 2 not found", cursor.moveToNext());
+        assertEquals("ID mismatch", Cursor.FIELD_TYPE_NULL, cursor.getType(cursor.getColumnIndex("c.id")));
+        assertEquals("Parent name mismatch", "parent2", CursorCommon.string(cursor, "c.parent_name"));
+        assertEquals("Child name mismatch", null, CursorCommon.string(cursor, "c.name"));
+    }
+
+    public void testCrossJoinedQuery() {
+        write("insert into parent(name) values ('parent')");
+        write("insert into parent(name) values ('parent2')");
+        write("insert into child(parent_id, name) values (1, 'child')");
+        write("insert into child(parent_id, name) values (2, 'child2')");
+
+        Uri uri = new UriBuilder()
+                .authority(AUTHORITY)
+                .table(Parent.TABLE_NAME, "p")
+                .crossJoin(Child.TABLE_NAME, "c").end()
+                .build();
+
+        cursor = getMockContentResolver().query(uri, Child.PROJECTION_ALIASED, null, null, null);
+        assertEquals("Values more than required", 4, cursor.getCount());
+
+        assertTrue("Value not found", cursor.moveToFirst());
+        assertEquals("ID mismatch", 1, CursorCommon.integer(cursor, "c.id"));
+        assertEquals("Parent name mismatch", "parent", CursorCommon.string(cursor, "c.parent_name"));
+        assertEquals("Child name mismatch", "child", CursorCommon.string(cursor, "c.name"));
+
+        assertTrue("Value 2 not found", cursor.moveToNext());
+        assertEquals("ID mismatch", 2, CursorCommon.integer(cursor, "c.id"));
+        assertEquals("Parent name mismatch", "parent", CursorCommon.string(cursor, "c.parent_name"));
+        assertEquals("Child name mismatch", "child2", CursorCommon.string(cursor, "c.name"));
+    }
+
     public void testInsert() {
         ContentValues value = new ContentValues();
         value.put(Parent.Col.NAME, "insertTest");
