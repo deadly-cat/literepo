@@ -210,7 +210,7 @@ public class UriQuery {
     }
 
     /**
-     * IN operator.
+     * NOT IN operator.
      *
      * @param column column name
      * @param value raw sql query
@@ -218,6 +218,36 @@ public class UriQuery {
      */
     public UriQuery in(String column, SqlValue value) {
         return condition(column, Operator.IN, value, true);
+    }
+
+    /**
+     * NOT IN operator.
+     *
+     * @param column column name
+     * @param values collection of values. Be aware: for big collections prefer using (selection, selectionArgs)
+     * @return query
+     */
+    public UriQuery notIn(String column, Collection values) {
+        StringBuilder value = new StringBuilder();
+        for(Object v : values) {
+            if(value.length() > 0) {
+                value.append(DELIMITER_LIST);
+            }
+            checkReserved(v);
+            value.append(v);
+        }
+        return condition(column, Operator.NOT_IN, value, false);
+    }
+
+    /**
+     * IN operator.
+     *
+     * @param column column name
+     * @param value raw sql query
+     * @return query
+     */
+    public UriQuery notIn(String column, SqlValue value) {
+        return condition(column, Operator.NOT_IN, value, true);
     }
 
     /**
