@@ -16,9 +16,10 @@ public enum Operator {
     GREATER_THAN_OR_EQUALS("gte", ">="),
     LOWER_THAN("lt", "<"),
     LOWER_THAN_OR_EQUALS("lte", "<="),
-    LIKE("like", "like"),
-    MATCH("match", "match"),
+    LIKE("lk", "like"),
+    MATCH("mh", "match"),
     IN("in", "in"),
+    NOT_IN("nin", "not in"),
     BETWEEN("bn", "between"),
     IS_NULL("isn", "is null"),
     IS_NOT_NULL("isnn", "is not null");
