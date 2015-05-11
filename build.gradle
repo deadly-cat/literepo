@@ -18,6 +18,12 @@ ext {
     loadProperties()
 }
 
+description = '''\
+Simplify your work with sqlite in android.
+Core library: contains builders and content provider.
+Conversion library: contains converters and annotations.
+'''
+
 buildscript {
 
     repositories {
@@ -60,8 +66,8 @@ configure(allprojects.findAll {publishedProjects.contains(it.name)}) {
 
         pkg {
             repo = 'maven'
-            name = project.name
-            desc = project.description
+            name = 'literepo'
+            desc = description
             websiteUrl = 'https://github.com/deadly-cat/literepo'
             issueTrackerUrl = 'https://github.com/deadly-cat/literepo/issues'
             vcsUrl = 'https://github.com/deadly-cat/literepo.git'
