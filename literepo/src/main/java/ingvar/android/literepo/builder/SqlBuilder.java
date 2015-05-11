@@ -87,13 +87,12 @@ public class SqlBuilder {
         String path = uri.getPath().replaceAll("/", "");
 
         if(UriBuilder.PATH.equals(path)) {
-            String tableAlias = parseTable(from, uri.getQueryParameter(UriBuilder.PARAM_TABLE + "0"));
+            String tableAlias = parseTable(from, false, uri.getQueryParameter(UriBuilder.PARAM_TABLE + "0"));
 
             int tables = Integer.valueOf(uri.getQueryParameter(UriBuilder.PARAM_TABLE_COUNT));
             if(tables > 1) {
                 for(int i = 1; i < tables; i++) {
-                    from.append(" join ");
-                    String joinAlias = parseTable(from, uri.getQueryParameter(UriBuilder.PARAM_TABLE + Integer.toString(i)));
+                    String joinAlias = parseTable(from, true, uri.getQueryParameter(UriBuilder.PARAM_TABLE + Integer.toString(i)));
                     String query = uri.getQueryParameter(UriBuilder.PARAM_QUERY + Integer.toString(i));
                     if(query != null && !query.isEmpty()) {
                         from.append(" on (");
@@ -132,8 +131,18 @@ public class SqlBuilder {
      * @param rawTable uri query value. See {@link UriBuilder#createTableQuery(Uri.Builder, int, UriBuilder.Table)}
      * @return table alias
      */
-    protected String parseTable(StringBuilder builder, String rawTable) {
+    protected String parseTable(StringBuilder builder, boolean isJoin, String rawTable) {
+        if(isJoin) {
+            JoinType join = JoinType.fromUri(rawTable);
+            rawTable = rawTable.replaceFirst(join.uri, "");
+
+            if(!join.sql.isEmpty()) {
+                builder.append(" ").append(join.sql);
+            }
+            builder.append(" join ");
+        }
         int ts = rawTable.indexOf(".");
+
         String name = rawTable;
         String alias = null;
         if(ts != -1) {

@@ -289,6 +289,32 @@ public class BuildersTest extends TestCase {
         assertEquals("Mistake in args", expectedValues, Arrays.asList(query.getArgs()));
     }
 
+    public void testLeftJoin() {
+        String expected = "table1 as t1 left join table2 as t2";
+
+        Uri uri = new UriBuilder()
+        .authority("example.com")
+        .table("table1", "t1")
+        .leftJoin("table2", "t2").end()
+        .build();
+
+        SqlBuilder query = new SqlBuilder(uri);
+        assertEquals("Mistake in from", expected, query.getFrom());
+    }
+
+    public void testCrossJoin() {
+        String expected = "table1 as t1 cross join table2 as t2";
+
+        Uri uri = new UriBuilder()
+        .authority("example.com")
+        .table("table1", "t1")
+        .crossJoin("table2", "t2").end()
+        .build();
+
+        SqlBuilder query = new SqlBuilder(uri);
+        assertEquals("Mistake in from", expected, query.getFrom());
+    }
+
     private static final String DQ = UriQuery.DELIMITER_QUERY;
     private static final String VS = UriQuery.VALUE_SQL;
 

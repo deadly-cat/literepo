@@ -96,9 +96,29 @@ public class UriBuilder {
      * @return join query
      */
     public UriQuery join(String name, String alias) {
-        Table table = new Table(name, alias);
-        join.add(table);
-        return table.query = new UriQuery(this);
+        return join(name, alias, JoinType.INNER);
+    }
+
+    /**
+     * Add left outer join.
+     *
+     * @param name table name
+     * @param alias table alias
+     * @return join query
+     */
+    public UriQuery leftJoin(String name, String alias) {
+        return join(name, alias, JoinType.LEFT);
+    }
+
+    /**
+     * Add cross join.
+     *
+     * @param name table name
+     * @param alias table alias
+     * @return join query
+     */
+    public UriQuery crossJoin(String name, String alias) {
+        return join(name, alias, JoinType.CROSS);
     }
 
     /**
@@ -129,8 +149,14 @@ public class UriBuilder {
         return builder.build();
     }
 
+    protected UriQuery join(String name, String alias, JoinType relation) {
+        Table table = new Table(name, alias, relation);
+        join.add(table);
+        return table.query = new UriQuery(this);
+    }
+
     protected void createTableQuery(Uri.Builder builder, int index, Table table) {
-        String tableQuery = table.name;
+        String tableQuery = table.relation.uri + table.name;
         if(table.alias != null && !table.alias.isEmpty()) {
             tableQuery += "." + table.alias;
         }
@@ -142,15 +168,23 @@ public class UriBuilder {
 
     protected class Table {
 
+        private JoinType relation;
         private String name;
         private String alias;
         private UriQuery query;
 
-        public Table() {}
+        public Table() {
+            this(null, null);
+        }
 
         public Table(String name, String alias) {
+            this(name, alias, JoinType.INNER);
+        }
+
+        public Table(String name, String alias, JoinType relation) {
             this.name = name;
             this.alias = alias;
+            this.relation = relation;
         }
 
     }

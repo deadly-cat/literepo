@@ -5,8 +5,8 @@ ext {
     vMinSdkVersion = 14
     vTargetSdkVersion = 21
 
-    vGlobalVersionCode = 7
-    vGlobalVersionName = '2.2.1'
+    vGlobalVersionCode = 8
+    vGlobalVersionName = '2.3.0'
 
     vVersionCode = vGlobalVersionCode
     vVersionName = vGlobalVersionName
@@ -25,7 +25,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.2'
+        classpath 'com.android.tools.build:gradle:1.2.3'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
 
