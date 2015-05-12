@@ -19,12 +19,24 @@ public class CursorCommon {
         return cursor.getInt(cursor.getColumnIndex(key));
     }
 
-    public static Long longv(Cursor cursor, String key) {
+    public static long longv(Cursor cursor, String key) {
         return cursor.getLong(cursor.getColumnIndex(key));
     }
 
     public static boolean bool(Cursor cursor, String key) {
-        return Boolean.valueOf(cursor.getString(cursor.getColumnIndex(key)));
+        boolean result;
+        switch (cursor.getType(cursor.getColumnIndex(key))) {
+            case Cursor.FIELD_TYPE_STRING:
+                result = Boolean.parseBoolean(string(cursor, key));
+                break;
+            case Cursor.FIELD_TYPE_FLOAT:
+            case Cursor.FIELD_TYPE_INTEGER:
+                result = integer(cursor, key) > 0;
+                break;
+            default:
+                throw new IllegalArgumentException("Can't get boolean from field " + key);
+        }
+        return result;
     }
 
     public static byte[] blob(Cursor cursor, String key) {
