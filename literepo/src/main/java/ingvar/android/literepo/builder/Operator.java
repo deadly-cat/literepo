@@ -27,7 +27,7 @@ public enum Operator {
     /**
      * Collection of list operators. Like as 'IN'
      */
-    public static final List<Operator> LIST_OPERATORS = Collections.unmodifiableList(Arrays.asList(IN));
+    public static final List<Operator> LIST_OPERATORS = Collections.unmodifiableList(Arrays.asList(IN, NOT_IN));
 
     /**
      * Get operator by Uri representation.
