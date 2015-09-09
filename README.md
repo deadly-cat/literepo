@@ -2,7 +2,7 @@
 A small library simplifies working with sqlite in android.
 
 [![License](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
-[![Build Status](https://travis-ci.org/deadly-cat/literepo.svg?branch=master)](https://travis-ci.org/orwir/literepo)
+[![Build Status](https://travis-ci.org/orwir/literepo.svg?branch=master)](https://travis-ci.org/orwir/literepo)
 [![Download](https://api.bintray.com/packages/deadly-cat/maven/literepo/images/download.svg) ](https://bintray.com/deadly-cat/maven/literepo/_latestVersion)
 
 ###Usage
