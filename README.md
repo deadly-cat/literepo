@@ -2,7 +2,7 @@
 A small library simplifies working with sqlite in android.
 
 [![License](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
-[![Build Status](https://travis-ci.org/deadly-cat/literepo.svg?branch=master)](https://travis-ci.org/deadly-cat/literepo)
+[![Build Status](https://travis-ci.org/deadly-cat/literepo.svg?branch=master)](https://travis-ci.org/orwir/literepo)
 [![Download](https://api.bintray.com/packages/deadly-cat/maven/literepo/images/download.svg) ](https://bintray.com/deadly-cat/maven/literepo/_latestVersion)
 
 ###Usage
@@ -29,7 +29,7 @@ dependencies {
 }
 ```
 
-For creating request to DB you need to use [**UriBuilder**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/builder/UriBuilder.java).
+For creating request to DB you need to use [**UriBuilder**](https://github.com/orwir/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/builder/UriBuilder.java).
 ```java
 String[] projection = "col1, col2";
 
@@ -82,7 +82,7 @@ join example_child as c on (c.parent_id = p._id)
 where (col1 = 42 or col1 > 84)
 ```
 
-Also you need to extend [**LiteProvider.java**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/LiteProvider.java) and override method **provideOpenHelper()**:
+Also you need to extend [**LiteProvider.java**](https://github.com/orwir/literepo/blob/master/literepo/src/main/java/ingvar/android/literepo/LiteProvider.java) and override method **provideOpenHelper()**:
 ```java
 public class ExampleProvider extends LiteProvider {
     
@@ -95,12 +95,12 @@ public class ExampleProvider extends LiteProvider {
 ```
 
 
-More examples for builder you can find in the [**unit tests**](https://github.com/deadly-cat/literepo/blob/master/literepo/src/androidTest/java/ingvar/android/literepo/test/)
+More examples for builder you can find in the [**unit tests**](https://github.com/orwir/literepo/blob/master/literepo/src/androidTest/java/ingvar/android/literepo/test/)
 
 
 ####Conversion (annotations and converters)
 
-For using conversion library you need to annotate your Entity fields as [@Column](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/main/java/ingvar/android/literepo/conversion/annotation/Column.java).
+For using conversion library you need to annotate your Entity fields as [@Column](https://github.com/orwir/literepo/blob/master/literepo-conversion/src/main/java/ingvar/android/literepo/conversion/annotation/Column.java).
 ```java
 public class Entity {
     @Column(value = "col_name", type = Type.TEXT, nullable = false)
@@ -120,7 +120,7 @@ Entity entity = converter.convert(cursor);
 **Note**: For now converter not so fast because under the hood it use reflection. In the next release it will be replaced for code generation.
 
 
-Examples for conversion you can find in [**ConverterTest.java**](https://github.com/deadly-cat/literepo/blob/master/literepo-conversion/src/androidTest/java/ingvar/android/literepo/conversion/test/ConverterTest.java)
+Examples for conversion you can find in [**ConverterTest.java**](https://github.com/orwir/literepo/blob/master/literepo-conversion/src/androidTest/java/ingvar/android/literepo/conversion/test/ConverterTest.java)
 
 
-Example app in the [**example module**](https://github.com/deadly-cat/literepo/tree/master/examples).
+Example app in the [**example module**](https://github.com/orwir/literepo/tree/master/examples).
