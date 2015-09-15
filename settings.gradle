@@ -1,1 +1,2 @@
-include ':literepo', ':literepo-conversion', 'examples'
+rootProject.name = 'literepo-root'
+include ':literepo', ':literepo-conversion', ':examples'
