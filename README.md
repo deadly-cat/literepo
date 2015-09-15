@@ -3,7 +3,7 @@ A small library simplifies working with sqlite in android.
 
 [![License](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
 [![Build Status](https://travis-ci.org/orwir/literepo.svg?branch=master)](https://travis-ci.org/orwir/literepo)
-[![Download](https://api.bintray.com/packages/deadly-cat/maven/literepo/images/download.svg) ](https://bintray.com/deadly-cat/maven/literepo/_latestVersion)
+[![Download](https://api.bintray.com/packages/orwir/maven/literepo/images/download.svg) ](https://bintray.com/orwir/maven/literepo/_latestVersion)
 
 ###Usage
 
@@ -14,7 +14,7 @@ Add url to Bintray repository in your build.gradle
 allprojects {
     repositories {
         //... other urls
-        maven { url  'http://dl.bintray.com/deadly-cat/maven' }
+        maven { url  'http://dl.bintray.com/orwir/maven' }
     }
 }
 ```
@@ -23,9 +23,9 @@ Next add dependency for your module
 ```groovy
 dependencies {
     //for core library (contains builders and provider)
-    compile 'ingvar.android.literepo:literepo:2.3.2'
+    compile 'ingvar.android.literepo:core:2.3.2'
     //for conversion library (contains converters and annotations)
-    compile 'ingvar.android.literepo:literepo-conversion:2.3.2'
+    compile 'ingvar.android.literepo:conversion:2.3.2'
 }
 ```
 
