@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 ext {
     vCompileSdkVersion = 21
-    vBuildToolsVersion = '21.1.1'
+    vBuildToolsVersion = '23.0.1'
     vMinSdkVersion = 14
     vTargetSdkVersion = 21
 
@@ -25,7 +25,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.3.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
 
@@ -62,9 +62,9 @@ configure(allprojects.findAll {publishedProjects.contains(it.name)}) {
             repo = 'maven'
             name = 'literepo'
             desc = 'Simplify your work with sqlite in android.\nCore library: contains builders and content provider.\nConversion library: contains converters and annotations.'
-            websiteUrl = 'https://github.com/deadly-cat/literepo'
-            issueTrackerUrl = 'https://github.com/deadly-cat/literepo/issues'
-            vcsUrl = 'https://github.com/deadly-cat/literepo.git'
+            websiteUrl = 'https://github.com/orwir/literepo'
+            issueTrackerUrl = 'https://github.com/orwir/literepo/issues'
+            vcsUrl = 'https://github.com/orwir/literepo.git'
             licenses = ['Apache-2.0']
             labels = ['sqlite', 'android']
             publicDownloadNumbers = true
