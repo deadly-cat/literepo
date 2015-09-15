@@ -3,7 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 description '''\
 Simplify your work with sqlite in android.
-Conversion library: contains converters and annotations.
+Conversion module: contains converters and annotations.
 '''
 
 ext {
@@ -58,7 +58,7 @@ install {
                 packaging 'aar'
                 name project.name
                 description project.description
-                url 'https://github.com/deadly-cat/literepo'
+                url 'https://github.com/orwir/literepo'
                 licenses {
                     license {
                         name 'The Apache Software License, Version 2.0'
@@ -67,15 +67,15 @@ install {
                 }
                 developers {
                     developer {
-                        id 'deadly-cat'
+                        id 'orwir'
                         name 'Igor Zubenko'
                         email 'igor.a.zubenko@gmail.com'
                     }
                 }
                 scm {
-                    connection 'https://github.com/deadly-cat/literepo.git'
-                    developerConnection 'https://github.com/deadly-cat/literepo.git'
-                    url 'https://github.com/deadly-cat/literepo'
+                    connection 'https://github.com/orwir/literepo.git'
+                    developerConnection 'https://github.com/orwir/literepo.git'
+                    url 'https://github.com/orwir/literepo'
 
                 }
             }
