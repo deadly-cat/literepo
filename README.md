@@ -23,9 +23,9 @@ Next add dependency for your module
 ```groovy
 dependencies {
     //for core library (contains builders and provider)
-    compile 'ingvar.android.literepo:core:2.3.2'
+    compile 'ingvar.android.literepo:core:2.3.3'
     //for conversion library (contains converters and annotations)
-    compile 'ingvar.android.literepo:conversion:2.3.2'
+    compile 'ingvar.android.literepo:conversion:2.3.3'
 }
 ```
 
